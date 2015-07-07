@@ -28,7 +28,6 @@ public class testNodes {
 		nodes.add(new Node("B123", "Second node, added 2 files.", "A13"));
 		nodes.add(new Node("C1", "Third node, removed sth from file a.", "B123"));
 		NodeValidators validator = new NodeValidators();
-		// exception.expect(NodeException.class);
 		try{
 		validator.validateID(nodes);
 		fail("NodeException due to invalid Id should be thrown.");

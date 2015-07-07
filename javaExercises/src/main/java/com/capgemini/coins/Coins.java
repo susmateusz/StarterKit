@@ -1,7 +1,5 @@
 package com.capgemini.coins;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,10 +28,15 @@ import java.util.List;
  */
 public class Coins {
 
-	/*
-	 * countPairs - return number of pairs in one sequence
+	/**
+	 * Returns a number of adjacent pairs with the same value in given
+	 * <code>List</code> of <code>Integers</code>. When List is empty returns 0.
+	 * 
+	 * @param coins
+	 *            - list of the coins representing by Integers
+	 * @return Number of adjacent pairs with the same value
 	 */
-	private static int countPairs(List<Integer> coins) {
+	public static int countPairs(List<Integer> coins) {
 		int pairs = 0;
 		for (int i = 0; i < coins.size() - 1; i++)
 			if (coins.get(i) == coins.get(i + 1))
@@ -41,31 +44,31 @@ public class Coins {
 		return pairs;
 	}
 
-	/*
-	 * solution - returns maximum possible adjacency obtained by reversing one
-	 * function uses countPairs(List<Integer> coins) for computing number of
-	 * pairs in one sequence coins - list of coins, 0 represents coin with heads
-	 * facing up, 1 is a coin with tails facing up
+	/**
+	 * Returns the maxumim number of adjacent pairs given by reversing EXACTLY
+	 * one coin. As is specified in requirements, one coin must be reversed,
+	 * even if the initial set gives the highest score. Requires function
+	 * countPairs(List<Integer> coins). Assume that 0 represents coin with head
+	 * facing up and 1 represents coin with tails facing up.
+	 * 
+	 * @param coins
+	 *            - list of coins in current set
+	 * @return Maximum number of adjacent pairs given by reversing one coin
 	 */
 	public static int solution(List<Integer> coins) {
-		int maxPairs = countPairs(coins);
+		// number of pairs in the initial List is the initial max number of
+		// pairs
+		int maxPairs = 0;
 		int currentPairs = 0;
 		for (int i = 0; i < coins.size(); i++) {
+			// reverse coin
 			coins.set(i, (coins.get(i) == 0) ? 1 : 0);
 			currentPairs = countPairs(coins);
-			/*
-			 * for(Integer j : coins) System.out.print(j+" ");
-			 * System.out.println("| pairs: " + currentPairs);
-			 */
+			// reverse coin
 			coins.set(i, (coins.get(i) == 0) ? 1 : 0);
+			// update maximum number of pairs
 			maxPairs = Math.max(maxPairs, currentPairs);
 		}
 		return maxPairs;
-	}
-
-	public static void main(String[] args) {
-		// list of coins
-		List<Integer> A = new ArrayList<Integer>(Arrays.asList(1, 0, 1, 0));
-		System.out.println("Result: " + solution(A));
 	}
 }

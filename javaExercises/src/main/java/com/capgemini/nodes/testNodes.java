@@ -21,6 +21,7 @@ public class testNodes {
 		assertEquals("Node [id=B000, description=Second node, added 2 files., predecessorId=A000]", n2.toString());
 	}
 
+	
 	@Test
 	public void testValidatorOfIdWhenWrong() {
 		List<Node> nodes = new ArrayList<Node>();

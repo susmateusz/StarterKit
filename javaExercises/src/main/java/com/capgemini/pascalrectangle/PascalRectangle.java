@@ -1,5 +1,6 @@
 package com.capgemini.pascalrectangle;
 
+//@formatter:off
 /**
  * Created by ldrygala on 2015-01-23.
  * 0                     1
@@ -13,17 +14,20 @@ package com.capgemini.pascalrectangle;
  * 8     1   8   28  56  70  56   28  8   1
  * 9   1   9  36   84  126 126  84  36  9   1
  */
+//@formatter:on
 public class PascalRectangle {
-	/*
-	 * pascal c - column r - row
+
+	/**
+	 * Returns value of pascal triangle at c<sup>th</sup> place in r
+	 * <sup>th</sup> row. Using iterative algorithm.
+	 * 
+	 * @param c
+	 *            column
+	 * @param r
+	 *            row
+	 * @return pascal triangle point (r,c)
 	 */
 	public static long pascal(int c, int r) {
-		// if (r == 0 || r == c)
-		// return 1;
-		// else if (r > c - r)
-		// return pascal(c, c - r);
-		// else
-		// return pascal(c - 1, r - 1) + pascal(c - 1, r);
 		// select lower number. Pascal triangle is symetric
 		if (c >= r - c)
 			c = r - c;
@@ -33,12 +37,4 @@ public class PascalRectangle {
 		return result;
 	}
 
-	static public void main(String[] args) {
-		int rows = 10;
-		for (int i = 0; i < rows; i++) {
-			System.out.print("\n"+ i + ":  ");
-			for (int j = 0; j < i + 1; j++)
-				System.out.print(pascal(j, i) + "  ");
-		}
-	}
 }

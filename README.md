@@ -5,7 +5,7 @@ List of projects:
 javaExcercises - 02.07.2015  
 	* coins - finished, comments, tests  
 	* fibonacci - finished, comments, tests  
-	* nodes - finished, no comments, tests  
+	* nodes - finished, comments, tests  
 	* pascalrectangle - finished, no comments, no tests  
 	* placeToSplit - finished, no comments, no tests  
 	* pokerHands - finished, no comments, tests  

@@ -244,15 +244,14 @@ public class testNodes {
 		try {
 			validator.validatePredecessors(nodes);
 		} catch (NodeException e) {
-			fail("Found cycle when structure of list was correct.");
+			fail("Found error when structure of list was correct.");
 		}
 		// test when list is empty
 		nodes = new ArrayList<Node>();
 		try {
 			validator.validatePredecessors(nodes);
-			System.out.println("Exception wasn't thrown");
 		} catch (NodeException e) {
-			System.out.println(e.getErrorCode());
+			fail("Found error with structure of list when list was empty.");
 		}
 		
 	}

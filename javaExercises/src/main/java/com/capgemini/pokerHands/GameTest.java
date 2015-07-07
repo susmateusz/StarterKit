@@ -23,6 +23,6 @@ public class GameTest {
 	public void testAllGames(){
 		Game g = new Game("src\\poker.txt");
 		g.playAllGames();
-		System.out.println("Scores\nPlayer 1: "+g.getWins1()+"\nPlayer 2: "+g.getWins2());
+		//System.out.println("Scores\nPlayer 1: "+g.getWins1()+"\nPlayer 2: "+g.getWins2());
 	}
 }

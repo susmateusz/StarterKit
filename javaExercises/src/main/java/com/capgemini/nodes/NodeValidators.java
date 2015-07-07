@@ -42,7 +42,7 @@ public class NodeValidators {
 			if(n.getId().equals(n.getPredecessorId()))
 				headExist = true;
 		if( !headExist )
-			throw new NodeException(NodeErrorCode.INVALID_DESCRIPTION);
+			throw new NodeException(NodeErrorCode.CYCLE);
 	}
 	
 	public void validatePredecessors(List<Node> nodes) throws NodeException {
@@ -66,7 +66,7 @@ public class NodeValidators {
 			if(penultimateId==null)
 				penultimateId=n.getPredecessorId();
 			else if(!penultimateId.equals(n.getPredecessorId()))
-				throw new NodeException(NodeErrorCode.INVALID_NUMBER_OF_SUBSEQUENT);
+				throw new NodeException(NodeErrorCode.INVALID_SUBSEQUENT_POSITION);
 	}
 }
 

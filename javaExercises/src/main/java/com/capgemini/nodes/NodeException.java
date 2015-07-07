@@ -4,19 +4,17 @@ public class NodeException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	private int errorCode;
-	private String errorMsg;
+	private NodeErrorCode errorCode;
 
 	public NodeException(NodeErrorCode code) {
-		this.errorCode = code.getId();
-		this.errorMsg = code.getMsg();
+		this.errorCode = code;
 	}
 
-	public int getErrorCode() {
+	public NodeErrorCode getErrorCode() {
 		return errorCode;
 	}
 
 	public String getErrorMessage() {
-		return errorMsg;
+		return errorCode.getMsg();
 	}
 }

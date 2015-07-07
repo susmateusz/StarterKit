@@ -22,16 +22,16 @@ public class testNodes {
 	}
 
 	@Test
-	public void testValidatorOfIdWhenWrong(){
+	public void testValidatorOfIdWhenWrong() {
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(new Node("A123", "First node, root of a tree.", "A123"));
 		nodes.add(new Node("B123", "Second node, added 2 files.", "A13"));
 		nodes.add(new Node("C1", "Third node, removed sth from file a.", "B123"));
 		NodeValidators validator = new NodeValidators();
-		try{
-		validator.validateID(nodes);
-		fail("NodeException due to invalid Id should be thrown.");
-		} catch (NodeException e){
+		try {
+			validator.validateID(nodes);
+			fail("NodeException due to invalid Id should be thrown.");
+		} catch (NodeException e) {
 			assertEquals(NodeErrorCode.INVALID_ID, e.getErrorCode());
 		}
 	}
@@ -59,8 +59,12 @@ public class testNodes {
 				"A001"));
 		nodes.add(new Node("C003", "Third node, removed sth from file a.", "B002"));
 		NodeValidators validator = new NodeValidators();
-		exception.expect(NodeException.class);
-		validator.validateDescription(nodes);
+		try {
+			validator.validateDescription(nodes);
+			fail("NodeException due to invalid length of description should be thrown.");
+		} catch (NodeException e) {
+			assertEquals(NodeErrorCode.INVALID_DESCRIPTION, e.getErrorCode());
+		}
 	}
 
 	@Test
@@ -79,15 +83,19 @@ public class testNodes {
 
 	@Test
 	public void testValidatorOfCyclesWhenWrong() throws NodeException {
-		NodeValidators validator = new NodeValidators();
 		List<Node> nodes1 = new ArrayList<Node>();
 		nodes1.add(new Node("A001", "First node, root of a tree.", "D004"));
 		nodes1.add(new Node("B002", "Second node, added 2 files.", "A001"));
 		nodes1.add(new Node("C003", "Third node, removed sth from file a.", "B002"));
 		nodes1.add(new Node("D004", "Node D, does nothing.", "C003"));
 		nodes1.add(new Node("E005", "Second node which points to C.", "C003"));
-		exception.expect(NodeException.class);
-		validator.validateCycles(nodes1);
+		NodeValidators validator = new NodeValidators();
+		try {
+			validator.validateCycles(nodes1);
+			fail("NodeException due to cycles in graph should be thrown.");
+		} catch (NodeException e) {
+			assertEquals(NodeErrorCode.CYCLE, e.getErrorCode());
+		}
 	}
 
 	@Test
@@ -120,28 +128,32 @@ public class testNodes {
 	@Test
 	public void testValidatorOfPredecesssorsWhenFollowerInWrongPlace() throws NodeException {
 		NodeValidators validator = new NodeValidators();
+		
 		List<Node> nodes1 = new ArrayList<Node>();
 		nodes1.add(new Node("A001", "First node, root of a tree.", "A001"));
 		nodes1.add(new Node("B002", "Second node, added 2 files.", "A001"));
 		nodes1.add(new Node("C003", "Third node, removed sth from file a.", "B002"));
 		nodes1.add(new Node("D004", "Node D, does nothing.", "C003"));
 		nodes1.add(new Node("E005", "Second node which points to C.", "B002"));
-		exception.expect(NodeException.class);
-		validator.validatePredecessors(nodes1);
-	}
-
-	@Test
-	public void testValidatorOfPredecesssorsWhenToMuchFollowers() throws NodeException {
-		NodeValidators validator = new NodeValidators();
-		List<Node> nodes1 = new ArrayList<Node>();
-		nodes1.add(new Node("A001", "First node, root of a tree.", "A001"));
-		nodes1.add(new Node("B002", "Second node, added 2 files.", "A001"));
-		nodes1.add(new Node("C003", "Third node, removed sth from file a.", "B002"));
-		nodes1.add(new Node("D004", "Node D, does nothing.", "C003"));
-		nodes1.add(new Node("E005", "Second node which points to C.", "C002"));
-		nodes1.add(new Node("F006", "Third node which points to C.", "C002"));
-		exception.expect(NodeException.class);
-		validator.validatePredecessors(nodes1);
+		try {
+			validator.validatePredecessors(nodes1);
+			fail("NodeException should be thrown due to subsequent in wrong position.");
+		} catch (NodeException e) {
+			assertEquals(NodeErrorCode.INVALID_SUBSEQUENT_POSITION, e.getErrorCode());
+		}
+		List<Node> nodes2 = new ArrayList<Node>();
+		nodes2.add(new Node("A001", "First node, root of a tree.", "A001"));
+		nodes2.add(new Node("B002", "Second node, added 2 files.", "A001"));
+		nodes2.add(new Node("C003", "Third node, removed sth from file a.", "B002"));
+		nodes2.add(new Node("D004", "Node D, does nothing.", "C003"));
+		nodes2.add(new Node("E005", "Second node which points to C.", "C002"));
+		nodes2.add(new Node("F006", "Third node which points to C.", "C002"));
+		try {
+			validator.validatePredecessors(nodes2);
+			fail("NodeException should be thrown due to invalid number of subsequent for penultimate node.");
+		} catch (NodeException e) {
+			assertEquals(NodeErrorCode.INVALID_NUMBER_OF_SUBSEQUENT, e.getErrorCode());
+		}
 	}
 
 	@Test

@@ -1,5 +1,5 @@
 # StarterKit
-Starter Kit - projects made during intership.
+Starter Kit - projects made during internship.
 
 List of projects:
 javaExcercises - 02.07.2015

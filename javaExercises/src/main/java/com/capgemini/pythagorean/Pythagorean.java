@@ -8,6 +8,14 @@ package com.capgemini.pythagorean;
  */
 public class Pythagorean {
 
+	/**
+	 * Returns triplet of numbers, which are Pythagorean triplet and their sum
+	 * is equal sum
+	 * 
+	 * @param sum
+	 *            sum of triplet
+	 * @return product of triplet which sum given sum parameter
+	 */
 	public static long findTriplet(long sum) {
 		long a, b, c;
 		for (long m = 1; m < 100; m++)
@@ -16,13 +24,12 @@ public class Pythagorean {
 					a = k * (m * m - n * n);
 					b = k * (2 * m * n);
 					c = k * (m * m + n * n);
-					if (a + b + c == 1000)
+					if (a + b + c == sum){
+						System.out.println(a+" "+b+" "+c);
 						return a * b * c;
+					}
 				}
 		return -1;
 	}
 
-	public static void main(String[] args) {
-		System.out.println(findTriplet(1000));
-	}
 }

@@ -7,7 +7,7 @@ javaExcercises - 02.07.2015
 	* fibonacci - finished, comments, tests  
 	* nodes - finished, comments, tests  
 	* pascalrectangle - finished, comments, tests  
-	* placeToSplit - finished, no comments, no tests  
+	* placeToSplit - finished, comments, tests  
 	* pokerHands - finished, no comments, tests  
-	* pythagorean - finished, no comments, no tests  
+	* pythagorean - finished, comments, tests  
 	* taxi - not finished, no comments, no tests  

@@ -54,9 +54,6 @@ public class NodeValidators {
 					predecessors.put(i, j);
 		Set<Node> noFollowers = new HashSet<Node>(nodes);
 		noFollowers.removeAll(predecessors.values());
-		for(Node n : noFollowers)
-			System.out.println(n);
-		System.out.println();
 		// if number of them are larger than 2 throw exception
 		if( noFollowers.size()!=1 && noFollowers.size()!=2)
 			throw new NodeException(NodeErrorCode.INVALID_NUMBER_OF_SUBSEQUENT);

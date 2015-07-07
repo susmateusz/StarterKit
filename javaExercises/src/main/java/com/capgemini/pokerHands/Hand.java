@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Hand implements Comparable<Hand> {
+	// TODO Comments
 	// Constructor of TreeSet requires Comparator, so since class Card
 	// implements comparator, an instance of this class have to be used in this
 	// constructor

@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class GameTest {
-
+	// TODO Comments
 	@Test
 	public void testFile() {
 		Game g = new Game();

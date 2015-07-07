@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class CardTest {
+	// TODO Comments
 	private String[] values = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A" };
 	private String[] kinds = { "H", "C", "S", "D" };
 

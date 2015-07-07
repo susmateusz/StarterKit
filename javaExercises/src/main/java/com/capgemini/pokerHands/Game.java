@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Game {
-
+	// TODO Comments
 	private Hand[][] gameList = new Hand[1000][2];
 	private int wins1=0,wins2=0;
 	

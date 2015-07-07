@@ -3,6 +3,7 @@ package com.capgemini.pokerHands;
 import java.util.Comparator;
 
 public class Card implements Comparable<Card>, Comparator<Card> {
+	// TODO Comments
 	private int value;
 	private char kind;
 

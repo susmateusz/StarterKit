@@ -20,11 +20,9 @@ public class testNodes {
 	 * Check if nodes are correctly created. No checking and field.
 	 */
 	@Test
-	public void testCreateNodes() {
-		Node n1 = new Node("A000", "First node, root of a tree.", "A000");
-		Node n2 = new Node("B000", "Second node, added 2 files.", "A000");
-		assertEquals("Node [id=A000, description=First node, root of a tree., predecessorId=A000]", n1.toString());
-		assertEquals("Node [id=B000, description=Second node, added 2 files., predecessorId=A000]", n2.toString());
+	public void shouldCreateNode() {
+		Node n = new Node("A000", "First node, root of a tree.", "A000");
+		assertEquals("Node [id=A000, description=First node, root of a tree., predecessorId=A000]", n.toString());
 	}
 
 	/**

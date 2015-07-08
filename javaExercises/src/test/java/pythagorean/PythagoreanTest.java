@@ -1,8 +1,10 @@
-package com.capgemini.pythagorean;
+package pythagorean;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.capgemini.pythagorean.Pythagorean;
 
 /**
  * Tests Pythagorean class

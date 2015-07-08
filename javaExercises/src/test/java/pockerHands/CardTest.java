@@ -1,7 +1,9 @@
-package com.capgemini.pokerHands;
+package pockerHands;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.capgemini.pokerHands.Card;
 
 public class CardTest {
 	// TODO Comments

@@ -1,8 +1,10 @@
-package com.capgemini.placeToSplit;
+package placeToSplit;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.capgemini.placeToSplit.PlaceToSplit;
 
 /**
  * Tests class PlaceToSplit

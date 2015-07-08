@@ -1,5 +1,6 @@
 package com.capgemini.coins;
 
+
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -7,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.capgemini.coins.Coins;
 
 /**
  * Tests for class Coins.

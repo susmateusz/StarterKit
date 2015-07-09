@@ -1,7 +1,6 @@
 package com.capgemini.pokerHands;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -14,13 +13,25 @@ public class Hand implements Comparable<Hand> {
 	private TreeSet<Card> set = new TreeSet<Card>(new Card());
 	private Integer rankCard;
 	private Integer rankSecondCard;
+	/**
+	 * actual highest rank
+	 */
 	private Rank rank = Rank.EMPTY;
+	/**
+	 * kickers are card which are not in any rank, but when ranks are equal they
+	 * are compared with enemy's kickers
+	 */
 	public List<Integer> kickers = new ArrayList<Integer>();
 
 	public Hand() {
 
 	}
 
+	/**
+	 * args is list of strings with cards
+	 * 
+	 * @param args
+	 */
 	public Hand(String... args) {
 		for (String s : args)
 			addCard(new Card(s));
@@ -31,11 +42,22 @@ public class Hand implements Comparable<Hand> {
 		return rank;
 	}
 
+	/**
+	 * set rank
+	 * 
+	 * @param rank
+	 */
 	public void setRank(Rank rank) {
 		// System.out.println(this.rank + " " + rank);
 		this.rank = (this.rank.compareTo(rank) <= -1 || rank == null) ? rank : this.rank;
 	}
 
+	/**
+	 * set rank and the rank card
+	 * 
+	 * @param rank
+	 * @param rankValue
+	 */
 	public void setRank(Rank rank, Integer rankValue) {
 		if (this.rank.compareTo(rank) <= -1 || rank == null) {
 			this.rank = rank;
@@ -69,6 +91,9 @@ public class Hand implements Comparable<Hand> {
 		this.rankSecondCard = rankSecondCard;
 	}
 
+	/**
+	 * clears hand
+	 */
 	public void clear() {
 		set.clear();
 		rank = Rank.EMPTY;
@@ -78,6 +103,10 @@ public class Hand implements Comparable<Hand> {
 
 	}
 
+	/**
+	 * flushes are sets which cards of different values: straight, flush,
+	 * straight flush, royal flush
+	 */
 	public void findFlushes() {
 		// Checking order of values
 		boolean order = true;
@@ -112,6 +141,9 @@ public class Hand implements Comparable<Hand> {
 			setRank(Rank.EMPTY);
 	}
 
+	/**
+	 * Looking for values which appears multiple times in hand
+	 */
 	public void findPairs() {
 		// Copy of original set
 		TreeSet<Card> tmp = new TreeSet<Card>(set);
@@ -162,6 +194,10 @@ public class Hand implements Comparable<Hand> {
 		}
 	}
 
+	/**
+	 * finds order of cards: if exists, add rank card. if exists, add second
+	 * rank card. add descending remainders cards
+	 */
 	private void findPriorityOfKickers() {
 		if (getRank() != Rank.HIGH_CARD && getRankCard() != null)
 			kickers.add(getRankCard());
@@ -177,7 +213,6 @@ public class Hand implements Comparable<Hand> {
 		findFlushes();
 		findPairs();
 		findPriorityOfKickers();
-		// System.out.println(this + " kickers: " + kickers + " "+getRank());
 	}
 
 	public int compareTo(Hand o) {

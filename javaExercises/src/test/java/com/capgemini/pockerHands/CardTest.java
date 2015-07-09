@@ -1,4 +1,4 @@
-package pockerHands;
+package com.capgemini.pockerHands;
 import static org.junit.Assert.*;
 
 import org.junit.Test;

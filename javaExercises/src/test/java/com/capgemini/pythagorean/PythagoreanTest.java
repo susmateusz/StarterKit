@@ -1,4 +1,4 @@
-package pythagorean;
+package com.capgemini.pythagorean;
 
 import static org.junit.Assert.*;
 

@@ -1,4 +1,4 @@
-package taxi;
+package com.capgemini.taxi;
 
 import static org.junit.Assert.*;
 

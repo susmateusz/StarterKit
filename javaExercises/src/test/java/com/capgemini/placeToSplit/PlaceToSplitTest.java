@@ -1,4 +1,4 @@
-package placeToSplit;
+package com.capgemini.placeToSplit;
 
 import static org.junit.Assert.*;
 

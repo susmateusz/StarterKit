@@ -1,41 +1,50 @@
 package com.capgemini.taxi;
 
-import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class NearestTaxiCalculator implements TaxiModuleCalc {
+public class NearestTaxiCalculator implements TaxiModuleCalc,Observer {
 
-	private Set<Taxi> setOfTaxi = new TreeSet<Taxi>(new Comparator<Taxi>() {
-
-		public int compare(Taxi o1, Taxi o2) {
-			return o1.getX() * o1.getX() + o1.getY() * o1.getY() - o2.getX() * o2.getX() - o2.getY() * o2.getY();
-		}
-	});
-
+	private static int MAX_TAXI = 4;
+	private List<Taxi> taxiList = new ArrayList<Taxi>();
+	private ExecutorService exec = Executors.newCachedThreadPool();
+	
 	public void releaseTaxi(int x, int y) {
-		if (x * x + y * y < 1000*1000){
-			setOfTaxi.add(new Taxi(x, y));
-			System.out.println("Entered for "+x+" "+y);
-		} else {
-			System.out.println("Failed for "+x+" "+y);
-		}
-		System.out.println(setOfTaxi.size());
+		taxiList.add(new Taxi(x, y));
+		exec.execute(taxiList.get(taxiList.size()-1));
 	}
 
 	public int countTaxiInZone() {
-		return setOfTaxi.size();
+		int result = 0;
+		for (Taxi t : taxiList)
+			if (t.getR() < 1000)
+				++result;
+		return result;
 	}
 
 	public Taxi[] setOfTaxiInZone() {
-		System.out.println("Length of set:"+setOfTaxi.size());
-		return setOfTaxi.toArray(new Taxi[setOfTaxi.size()]);
+		Collections.sort(taxiList, new Comparator<Taxi>() {
+
+			public int compare(Taxi o1, Taxi o2) {
+				return o1.getX() * o1.getX() + o1.getY() * o1.getY() - o2.getX() * o2.getX() - o2.getY() * o2.getY();
+			}
+		});
+		int howMuchReturn = Math.min(countTaxiInZone(), MAX_TAXI);
+		return taxiList.subList(0, howMuchReturn).toArray(new Taxi[Math.min(countTaxiInZone(), MAX_TAXI)]);
 	}
-	
-	public void printSet(){
-		for(Taxi t : setOfTaxi)
+
+	public void printSet() {
+		for (Taxi t : taxiList)
 			System.out.println(t);
+	}
+
+	public void notifyObserver() {
+		System.out.println("Get notified.");
+		
 	}
 
 }

@@ -1,7 +1,11 @@
 package com.capgemini.taxi;
 
-public class Taxi {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
+public class Taxi implements Subject, Runnable {
+	private List<Observer> observers = new ArrayList<Observer>();
 	private int x, y;
 
 	public Taxi(int x, int y) {
@@ -30,10 +34,33 @@ public class Taxi {
 		this.y = y;
 	}
 
+	public int getR() {
+		return Integer.valueOf((int) Math.sqrt(this.x * this.x + this.y * this.y));
+	}
+
 	@Override
 	public String toString() {
-		return "Taxi [x=" + x + ", y=" + y + ", r="+(x*x+y*y)+"]";
+		return "Taxi [x=" + x + ", y=" + y + ", r=" + Math.sqrt(x * x + y * y) + "]";
 	}
-	
+
+	public void notifyObservers() {
+		for (Observer o : observers)
+			o.notifyObserver();
+	}
+
+	public void registerObserver(Observer observer) {
+		observers.add(observer);
+	}
+
+	public void unregisterObserver(Observer observer) {
+		observers.remove(observer);
+	}
+
+	public void run() {
+		Random rand = new Random(10);
+		while (true) {
+			
+		}
+	}
 
 }

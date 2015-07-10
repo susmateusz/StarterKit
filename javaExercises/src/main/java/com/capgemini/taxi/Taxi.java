@@ -1,16 +1,29 @@
 package com.capgemini.taxi;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Taxi implements Subject, Runnable {
+	private static final long UPDATE_TIME = 500;
+	private static final int MAX_SPEED = 10;
+	public static int counter = 0;
 	private List<Observer> observers = new ArrayList<Observer>();
 	private int x, y;
+	private int id;
+	private double angle;
+	private int width=20,height = 10;
 
 	public Taxi(int x, int y) {
 		this.x = x;
 		this.y = y;
+		this.id = Taxi.counter++;
+		Random rand = new Random();
+		angle = rand.nextDouble()%(Math.PI*2);
+
 	}
 
 	public boolean equals(Object o) {
@@ -18,29 +31,31 @@ public class Taxi implements Subject, Runnable {
 		return (this.x * this.x + this.y * this.y) == (taxi.x * taxi.x + taxi.y * taxi.y);
 	}
 
-	public int getX() {
+	synchronized public int getX() {
 		return x;
 	}
 
-	public void setX(int x) {
+	synchronized public void setX(int x) {
 		this.x = x;
 	}
 
-	public int getY() {
+	synchronized public int getY() {
 		return y;
 	}
 
-	public void setY(int y) {
+	synchronized public void setY(int y) {
 		this.y = y;
 	}
 
-	public int getR() {
+	synchronized public int getR() {
 		return Integer.valueOf((int) Math.sqrt(this.x * this.x + this.y * this.y));
 	}
 
 	@Override
 	public String toString() {
-		return "Taxi [x=" + x + ", y=" + y + ", r=" + Math.sqrt(x * x + y * y) + "]";
+		// return "Taxi [x=" + getX() + ", y=" + getY() + ", r=" +
+		// Math.sqrt(getX() * getX() + getY() * getY()) + "]";
+		return "T" + id + "(" + getX() + "," + getY() +","+getR()+ ")";
 	}
 
 	public void notifyObservers() {
@@ -57,10 +72,35 @@ public class Taxi implements Subject, Runnable {
 	}
 
 	public void run() {
-		Random rand = new Random(10);
+		System.out.println("start");
 		while (true) {
-			
+			move();
+			notifyObservers();
+			try {
+				Thread.sleep(Taxi.UPDATE_TIME);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
+	}
+
+	synchronized public void move() {
+		Random rand = new Random();
+		int dist = rand.nextInt(Taxi.MAX_SPEED);
+		setX((int)(getX() + dist*Math.cos(angle)));
+		setY((int)(getY() + dist*Math.sin(angle)));
+		angle += rand.nextDouble()%Math.PI/4-Math.PI/8;
+	}
+	
+	public void draw(Graphics g) {
+		g.setColor(new Color(150,150,150));
+		Graphics2D g2d = (Graphics2D)g.create();
+		g2d.rotate(angle);
+		g2d.fillRect(x-width/2, y-width/2, width, height);
+		g2d.rotate(-angle);
+		g2d.dispose();
+		
+
 	}
 
 }

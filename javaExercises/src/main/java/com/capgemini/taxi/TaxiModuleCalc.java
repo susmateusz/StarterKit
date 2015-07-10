@@ -9,4 +9,6 @@ public interface TaxiModuleCalc {
 	Taxi[] setOfTaxiInZone();
 
 	void printSet();
+
+	void setStop(boolean stop);
 }

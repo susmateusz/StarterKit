@@ -2,7 +2,7 @@ package com.capgemini.taxi;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
+import java.awt.EventQueue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +18,7 @@ public class TaxiTest {
 	@Before
 	public void initializeNearestTaxiModule() {
 		ntc = new NearestTaxiCalculator();
+		ntc.setStop(true);
 	}
 
 	@Test
@@ -68,6 +69,29 @@ public class TaxiTest {
 		Taxi[] t2 = ntc.setOfTaxiInZone();
 		assertArrayEquals(t1, t2);
 		ntc.printSet();
+	}	
+
+	@Test
+	public void shouldPlay() {
+		Taxi.counter = 0;
+		ntc.setStop(false);
+		ntc.releaseTaxi(500, 500);
+		ntc.releaseTaxi(500, 0);
+		ntc.releaseTaxi(500, -500);
+		ntc.releaseTaxi(0, -500);
+		ntc.releaseTaxi(-500, -500);
+		ntc.releaseTaxi(-500, 0);
+		ntc.releaseTaxi(-500, 500);
+		ntc.releaseTaxi(0, 500);
+		ntc.releaseTaxi(1000, 1000);
+		try {
+			Thread.sleep(10*1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(Taxi t : ntc.setOfTaxiInZone())
+			System.out.println(t);
 	}	
 	
 

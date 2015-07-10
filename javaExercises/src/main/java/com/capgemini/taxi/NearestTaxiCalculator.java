@@ -1,5 +1,7 @@
 package com.capgemini.taxi;
 
+import java.awt.Container;
+import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,15 +9,23 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class NearestTaxiCalculator implements TaxiModuleCalc,Observer {
+public class NearestTaxiCalculator implements TaxiModuleCalc, Observer {
 
 	private static int MAX_TAXI = 4;
-	private List<Taxi> taxiList = new ArrayList<Taxi>();
-	private ExecutorService exec = Executors.newCachedThreadPool();
-	
+	private List<Taxi> taxiList = Collections.synchronizedList(new ArrayList<Taxi>());
+	private ExecutorService exec = Executors.newCachedThreadPool(new TaxiFactory("Taxes"));
+	private boolean stop = false;
+
+	public NearestTaxiCalculator() {
+
+	}
+
 	public void releaseTaxi(int x, int y) {
-		taxiList.add(new Taxi(x, y));
-		exec.execute(taxiList.get(taxiList.size()-1));
+		Taxi t = new Taxi(x, y);
+		t.registerObserver(this);
+		taxiList.add(t);
+		if (!stop)
+			exec.execute(t);
 	}
 
 	public int countTaxiInZone() {
@@ -42,9 +52,17 @@ public class NearestTaxiCalculator implements TaxiModuleCalc,Observer {
 			System.out.println(t);
 	}
 
-	public void notifyObserver() {
-		System.out.println("Get notified.");
-		
+	synchronized public void notifyObserver() {
+		System.out.println("All taxes:");
+		System.out.println(taxiList);
+		System.out.println("Nearest taxes:");
+		for (Taxi t : setOfTaxiInZone())
+			System.out.print(t);
+		System.out.println();
+	}
+
+	public void setStop(boolean stop) {
+		this.stop = stop;
 	}
 
 }

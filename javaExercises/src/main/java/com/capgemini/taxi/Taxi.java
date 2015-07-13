@@ -1,8 +1,5 @@
 package com.capgemini.taxi;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,8 +12,6 @@ public class Taxi implements Subject, Runnable {
 	private int x, y;
 	private int id;
 	private double angle;
-	private int width=20,height = 10;
-
 	public Taxi(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -72,7 +67,6 @@ public class Taxi implements Subject, Runnable {
 	}
 
 	public void run() {
-		System.out.println("start");
 		while (true) {
 			move();
 			notifyObservers();
@@ -92,15 +86,15 @@ public class Taxi implements Subject, Runnable {
 		angle += rand.nextDouble()%Math.PI/4-Math.PI/8;
 	}
 	
-	public void draw(Graphics g) {
-		g.setColor(new Color(150,150,150));
-		Graphics2D g2d = (Graphics2D)g.create();
-		g2d.rotate(angle);
-		g2d.fillRect(x-width/2, y-width/2, width, height);
-		g2d.rotate(-angle);
-		g2d.dispose();
-		
-
-	}
+//	public void draw(Graphics g) {
+//		g.setColor(new Color(150,150,150));
+//		Graphics2D g2d = (Graphics2D)g.create();
+//		g2d.rotate(angle);
+//		g2d.fillRect(x-width/2, y-width/2, width, height);
+//		g2d.rotate(-angle);
+//		g2d.dispose();
+//		
+//
+//	}
 
 }

@@ -116,7 +116,6 @@ public class Card implements Comparator<Card> {
 	 * one suit every card is unique
 	 */
 	public int compare(Card o1, Card o2) {
-		System.out.println("************************\n\n\n");
 		return (o1.getValue() - o2.getValue() != 0) ? o1.getValue() - o2.getValue() : o1.getKind() - o2.getKind();
 	}
 

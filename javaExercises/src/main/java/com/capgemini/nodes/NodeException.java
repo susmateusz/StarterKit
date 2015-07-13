@@ -1,11 +1,12 @@
 package com.capgemini.nodes;
+
 /**
  * Exceptions for nodeValidator
+ * 
  * @author MATSUS
  *
  */
 public class NodeException extends Exception {
-
 	/**
 	 * 
 	 */
@@ -18,7 +19,9 @@ public class NodeException extends Exception {
 
 	/**
 	 * Exception constructor
-	 * @param code enum of code
+	 * 
+	 * @param code
+	 *            enum of code
 	 */
 	public NodeException(NodeErrorCode code) {
 		this.errorCode = code;
@@ -26,6 +29,7 @@ public class NodeException extends Exception {
 
 	/**
 	 * getter of error code
+	 * 
 	 * @return error code
 	 */
 	public NodeErrorCode getErrorCode() {
@@ -34,9 +38,10 @@ public class NodeException extends Exception {
 
 	/**
 	 * getter of error message
+	 * 
 	 * @return error message
 	 */
 	public String getErrorMessage() {
-		return "Error "+errorCode.getId()+" : "+errorCode.getMsg();
+		return "Error " + errorCode.getId() + " : " + errorCode.getMsg();
 	}
 }

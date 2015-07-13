@@ -1,4 +1,5 @@
 package com.capgemini.pockerHands;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class CardTest {
 				for (int j = i + 1; j < values.length; j++)
 					for (String kind2 : kinds) {
 						Card card2 = new Card(values[j] + kind2);
-						assertTrue("Expected to be less than",card1.compare(card1,card2) <= -1);
+						assertTrue("Expected to be less than", card1.compare(card1, card2) <= -1);
 					}
 			}
 	}
@@ -40,20 +41,9 @@ public class CardTest {
 				for (int j = 0; j < i; j++)
 					for (String kind2 : kinds) {
 						Card card2 = new Card(values[j] + kind2);
-						assertTrue("Expected to be greater than",card1.compare(card1,card2) >= 1);
+						assertTrue("Expected to be greater than", card1.compare(card1, card2) >= 1);
 					}
 			}
 	}
 
-	@Test
-	public void testFirstEqualsToSecond() {
-		for (int i = 0; i < values.length; i++)
-			for (String kind : kinds) {
-				Card card1 = new Card(values[i] + kind);
-				for (String kind2 : kinds) {
-					Card card2 = new Card(values[i] + kind2);
-					assertTrue("Expected to be equal", card1.compare(card1,card2) == 0);
-				}
-			}
-	}
 }

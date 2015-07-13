@@ -1,12 +1,13 @@
 package com.capgemini.nodes;
 
-
 /**
  * Enum which keeps error message and id. Using by NodeException to show
- * exceptions thrown by nodeValidator class.
- * Helpful readings: <br>
- * http://wiringtheplanet.blogspot.de/2012/10/use-enums-instead-of-int-constants-this.html<br>
- * https://northconcepts.com/blog/2013/01/18/6-tips-to-improve-your-exception-handling/<br>
+ * exceptions thrown by nodeValidator class. Helpful readings: <br>
+ * http://wiringtheplanet.blogspot.de/2012/10/use-enums-instead-of-int-constants
+ * -this.html<br>
+ * https://northconcepts.com/blog/2013/01/18/6-tips-to-improve-your-exception-
+ * handling/<br>
+ * 
  * @author MATSUS
  *
  */
@@ -31,8 +32,11 @@ public enum NodeErrorCode {
 
 	/**
 	 * Constructor which takes 2 arguments - id and message.
-	 * @param id id of the error
-	 * @param msg test message of the error
+	 * 
+	 * @param id
+	 *            id of the error
+	 * @param msg
+	 *            test message of the error
 	 */
 	private NodeErrorCode(int id, String msg) {
 		this.id = id;
@@ -41,6 +45,7 @@ public enum NodeErrorCode {
 
 	/**
 	 * getter of ID
+	 * 
 	 * @return error's ID
 	 */
 	public int getId() {
@@ -49,6 +54,7 @@ public enum NodeErrorCode {
 
 	/**
 	 * getter of message
+	 * 
 	 * @return error's text message
 	 */
 	public String getMsg() {

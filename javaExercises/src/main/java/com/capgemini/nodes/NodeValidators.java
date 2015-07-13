@@ -91,7 +91,7 @@ public class NodeValidators {
 		// Set of all nodes
 		Set<Node> noFollowers = new HashSet<Node>(nodes);
 		// Difference between all nodes and nodes which have followers is set of
-		// the last nodes (they have no followers)
+		// the last nodes in graph (they have no followers)
 		noFollowers.removeAll(predecessors.values());
 		// If number of them are neither 1 nor 2, throw exception
 		if (noFollowers.size() != 1 && noFollowers.size() != 2)

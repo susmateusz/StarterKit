@@ -1,7 +1,11 @@
 package com.capgemini.taxi;
 
 import java.util.concurrent.ThreadFactory;
-
+/**
+ * not used
+ * @author MATSUS
+ *
+ */
 public class TaxiFactory implements ThreadFactory {
 	private int counter = 0;
 	private String prefix = "";

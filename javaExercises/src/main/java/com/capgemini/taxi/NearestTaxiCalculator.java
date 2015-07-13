@@ -1,7 +1,5 @@
 package com.capgemini.taxi;
 
-import java.awt.Container;
-import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,13 +13,13 @@ public class NearestTaxiCalculator implements TaxiModuleCalc, Observer {
 	private List<Taxi> taxiList = Collections.synchronizedList(new ArrayList<Taxi>());
 	private ExecutorService exec = Executors.newCachedThreadPool(new TaxiFactory("Taxes"));
 	private boolean stop = false;
+	public boolean printTaxisReports = false;
 
 	public NearestTaxiCalculator() {
 
 	}
 
-	public void releaseTaxi(int x, int y) {
-		Taxi t = new Taxi(x, y);
+	public void releaseTaxi(Taxi t) {
 		t.registerObserver(this);
 		taxiList.add(t);
 		if (!stop)
@@ -53,12 +51,14 @@ public class NearestTaxiCalculator implements TaxiModuleCalc, Observer {
 	}
 
 	synchronized public void notifyObserver() {
-		System.out.println("All taxes:");
-		System.out.println(taxiList);
-		System.out.println("Nearest taxes:");
-		for (Taxi t : setOfTaxiInZone())
-			System.out.print(t);
-		System.out.println();
+		if (printTaxisReports) {
+			System.out.println("All taxes:");
+			System.out.println(taxiList);
+			System.out.println("Nearest taxes:");
+			for (Taxi t : setOfTaxiInZone())
+				System.out.print(t);
+			System.out.println();
+		}
 	}
 
 	public void setStop(boolean stop) {

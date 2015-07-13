@@ -2,7 +2,7 @@ package com.capgemini.taxi;
 
 public interface TaxiModuleCalc {
 	
-	void releaseTaxi(int x,int y);
+	void releaseTaxi(Taxi t);
 
 	int countTaxiInZone();
 	
@@ -10,5 +10,6 @@ public interface TaxiModuleCalc {
 
 	void printSet();
 
+	// stops movement of taxis
 	void setStop(boolean stop);
 }

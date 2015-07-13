@@ -25,7 +25,6 @@ public class Pythagorean {
 					b = k * (2 * m * n);
 					c = k * (m * m + n * n);
 					if (a + b + c == sum){
-						System.out.println(a+" "+b+" "+c);
 						return a * b * c;
 					}
 				}

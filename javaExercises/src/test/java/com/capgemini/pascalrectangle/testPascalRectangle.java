@@ -27,8 +27,8 @@ public class testPascalRectangle {
 	@Test
 	public void testBorders() {
 		for (int i = 0; i < 10; i++) {
-			assertEquals(1, PascalRectangle.pascal(0, i));
-			assertEquals(1, PascalRectangle.pascal(i, i));
+			assertEquals("row "+i+" column 0",1, PascalRectangle.pascal(0, i));
+			assertEquals("row "+i+" column "+i,1, PascalRectangle.pascal(i, i));
 		}
 	}
 
@@ -40,7 +40,7 @@ public class testPascalRectangle {
 	public void testInnerValues() {
 		for (int i = 0; i < 10; i++)
 			for (int j = 1; j < i; j++)
-				assertEquals(PascalRectangle.pascal(j - 1, i - 1) + PascalRectangle.pascal(j, i - 1),
+				assertEquals("row "+i+" column "+j,PascalRectangle.pascal(j - 1, i - 1) + PascalRectangle.pascal(j, i - 1),
 						PascalRectangle.pascal(j, i));
 	}
 

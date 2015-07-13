@@ -45,8 +45,6 @@ public class Game {
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder(1000*30);
-		System.out.println(gameList.length);
-		System.out.println(gameList[0].length);
 		for(Hand[] hands : gameList){
 			for(Hand h : hands)
 				result.append(h.toString());

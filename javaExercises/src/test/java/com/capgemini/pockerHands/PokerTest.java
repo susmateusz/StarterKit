@@ -19,17 +19,11 @@ public class PokerTest {
 	@Before
 	public void initializeHand() {
 		h = new Hand();
-		System.out.println("Nowy test");
 	}
 
-	@After
-	public void endTest() {
-		System.out.println("Koniec testu");
-	}
 
 	@Test
 	public void shouldReturnRoyalFlushWhenASKSQSJSTS() {
-		System.out.println("dudud");
 		h.addCard(new Card("AS"));
 		h.addCard(new Card("QS"));
 		h.addCard(new Card("JS"));

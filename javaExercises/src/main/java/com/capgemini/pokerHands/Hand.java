@@ -169,7 +169,7 @@ public class Hand implements Comparable<Hand> {
 
 			} else if (map.get(key1) == 3) {
 				// Found Three of a Kind or Full
-				for (Integer key2 : map.keySet())
+				for (Integer key2 : map.keySet()) {
 					if (map.get(key2) == 2) {
 						// Found Full
 						setRank(Rank.FULL, key1);
@@ -178,6 +178,7 @@ public class Hand implements Comparable<Hand> {
 					} else
 						// Found Three of a Kind
 						setRank(Rank.THREE_OF_KIND, key1);
+				}
 			} else if (map.get(key1) == 2) {
 				// Found one or two Pairs
 				for (Integer key2 : map.keySet())
@@ -210,8 +211,10 @@ public class Hand implements Comparable<Hand> {
 	}
 
 	public void findRank() {
-		findFlushes();
 		findPairs();
+		if (getRank() == Rank.HIGH_CARD) {
+			findFlushes();
+		}
 		findPriorityOfKickers();
 	}
 

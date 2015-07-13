@@ -1,15 +1,10 @@
 package com.capgemini.taxi;
 
-import static org.junit.Assert.*;
-
-import java.awt.EventQueue;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.capgemini.taxi.NearestTaxiCalculator;
-import com.capgemini.taxi.Taxi;
-import com.capgemini.taxi.TaxiModuleCalc;
 
 public class TaxiTest {
 
@@ -85,7 +80,7 @@ public class TaxiTest {
 		ntc.releaseTaxi(0, 500);
 		ntc.releaseTaxi(1000, 1000);
 		try {
-			Thread.sleep(10*1000);
+			Thread.sleep(1*1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

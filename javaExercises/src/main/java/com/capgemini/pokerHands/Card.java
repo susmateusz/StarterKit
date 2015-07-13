@@ -14,6 +14,11 @@ import java.util.List;
  */
 public class Card implements Comparator<Card> {
 	/**
+	 * List which help in converting values between char and int representations
+	 */
+	private static List<Character> specialValues = new ArrayList<Character>(
+			Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'));
+	/**
 	 * contains value of Card. Default -1, what mean that value is wrong
 	 */
 	private int value = -1;
@@ -22,11 +27,6 @@ public class Card implements Comparator<Card> {
 	 * S, D
 	 */
 	private char kind = 'X';
-	/**
-	 * List which help in converting values between char and int representations
-	 */
-	private static List<Character> specialValues = new ArrayList<Character>(
-			Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'));
 
 	/**
 	 * Constructor from string
@@ -59,7 +59,7 @@ public class Card implements Comparator<Card> {
 	 * 
 	 * @param value
 	 */
-	public void setValue(int value) {
+	private void setValue(int value) {
 		this.value = value;
 	}
 
@@ -77,7 +77,7 @@ public class Card implements Comparator<Card> {
 	 * 
 	 * @param kind
 	 */
-	public void setKind(char kind) {
+	private void setKind(char kind) {
 		this.kind = kind;
 	}
 
@@ -107,10 +107,6 @@ public class Card implements Comparator<Card> {
 		return "" + intToChar(getValue()) + "" + kind;
 	}
 
-	// public int compareTo(Card o) {
-	// return this.getValue() - o.getValue();
-	// }
-
 	/**
 	 * using by comparator to compare 2 cards: if 2 cards have the same value
 	 * then their colors are comapared comparing colors doesn't matter in poker,
@@ -120,6 +116,7 @@ public class Card implements Comparator<Card> {
 	 * one suit every card is unique
 	 */
 	public int compare(Card o1, Card o2) {
+		System.out.println("************************\n\n\n");
 		return (o1.getValue() - o2.getValue() != 0) ? o1.getValue() - o2.getValue() : o1.getKind() - o2.getKind();
 	}
 

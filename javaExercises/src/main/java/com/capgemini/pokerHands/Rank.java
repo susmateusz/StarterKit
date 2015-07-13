@@ -27,11 +27,4 @@ public enum Rank {
 	public int getValue() {
 		return value;
 	}
-
-//	public static Rank fromInt(int i) {
-//		for (Rank r : Rank.values())
-//			if (r.getValue() == i)
-//				return r;
-//		return null;
-//	}
 }

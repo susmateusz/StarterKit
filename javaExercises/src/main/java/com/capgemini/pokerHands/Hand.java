@@ -1,27 +1,53 @@
 package com.capgemini.pokerHands;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+/**
+ * Class which represents Hand with 5 cards
+ * 
+ * @author MATSUS
+ *
+ */
 public class Hand implements Comparable<Hand> {
-	// TODO Comments
 	// Constructor of TreeSet requires Comparator, so since class Card
 	// implements comparator, an instance of this class have to be used in this
 	// constructor
-	private TreeSet<Card> set = new TreeSet<Card>(new Card());
-	private Integer rankCard;
-	private Integer rankSecondCard;
+	/**
+	 * set of cards in hand.
+	 */
+	private Set<Card> set = new TreeSet<Card>(new Card());
+	/**
+	 * rankCard is the characteristic card for some of ranks, for example in
+	 * 45AKTT, T is rankCard
+	 */
+	private Integer rankCard = null;
+	/**
+	 * if FULL and TWO_PAIRS there are 2 rank cards - more and less important
+	 */
+	private Integer rankSecondCard = null;
 	/**
 	 * actual highest rank
 	 */
 	private Rank rank = Rank.EMPTY;
 	/**
-	 * kickers are card which are not in any rank, but when ranks are equal they
-	 * are compared with enemy's kickers
+	 * sorting cards by frequency descending and later by values descending
 	 */
-	public List<Integer> kickers = new ArrayList<Integer>();
+	private Set<Entry<Integer, Integer>> setSortedByValues = new TreeSet<Entry<Integer, Integer>>(
+			new Comparator<Entry<Integer, Integer>>() {
+
+				public int compare(Entry<Integer, Integer> o1, Entry<Integer, Integer> o2) {
+					if (o2.getValue() - o1.getValue() != 0)
+						return o2.getValue() - o1.getValue();
+					else
+						return o2.getKey() - o1.getKey();
+				}
+			});
 
 	public Hand() {
 
@@ -42,29 +68,6 @@ public class Hand implements Comparable<Hand> {
 		return rank;
 	}
 
-	/**
-	 * set rank
-	 * 
-	 * @param rank
-	 */
-	public void setRank(Rank rank) {
-		// System.out.println(this.rank + " " + rank);
-		this.rank = (this.rank.compareTo(rank) <= -1 || rank == null) ? rank : this.rank;
-	}
-
-	/**
-	 * set rank and the rank card
-	 * 
-	 * @param rank
-	 * @param rankValue
-	 */
-	public void setRank(Rank rank, Integer rankValue) {
-		if (this.rank.compareTo(rank) <= -1 || rank == null) {
-			this.rank = rank;
-			setRankCard(rankValue);
-		}
-	}
-
 	public void addCard(Card card) {
 		if (set.size() <= 5)
 			set.add(card);
@@ -79,16 +82,8 @@ public class Hand implements Comparable<Hand> {
 		return rankCard;
 	}
 
-	public void setRankCard(Integer rankValue) {
-		this.rankCard = rankValue;
-	}
-
 	public Integer getRankSecondCard() {
 		return rankSecondCard;
-	}
-
-	public void setRankSecondCard(Integer rankSecondCard) {
-		this.rankSecondCard = rankSecondCard;
 	}
 
 	/**
@@ -99,132 +94,118 @@ public class Hand implements Comparable<Hand> {
 		rank = Rank.EMPTY;
 		setRankCard(null);
 		setRankSecondCard(null);
-		kickers = new ArrayList<Integer>();
-
-	}
-
-	/**
-	 * flushes are sets which cards of different values: straight, flush,
-	 * straight flush, royal flush
-	 */
-	public void findFlushes() {
-		// Checking order of values
-		boolean order = true;
-		// Starting from first Card in set
-		int value = set.first().getValue();
-		// Checking if cards are in ascending order with no gaps
-		for (Card card : set)
-			if (card == set.first())
-				continue;
-			else if (card.getValue() == value + 1)
-				value += 1;
-			else
-				order = false;
-		// Checking if every card is in the same color
-		boolean equalKind = true;
-		char kind = set.first().getKind();
-		for (Card card : set)
-			if (card.getKind() != kind)
-				equalKind = false;
-		// Checking if highest card is Ace
-		boolean ace = (set.last().getValue() == 14);
-		// Determining flush
-		if (ace && equalKind && order) {
-			setRank(Rank.ROYAL_FLUSH);
-		} else if (equalKind && order) {
-			setRank(Rank.STRAIGHT_FLUSH);
-		} else if (equalKind) {
-			setRank(Rank.FLUSH);
-		} else if (order) {
-			setRank(Rank.STRAIGHT);
-		} else
-			setRank(Rank.EMPTY);
 	}
 
 	/**
 	 * Looking for values which appears multiple times in hand
 	 */
-	public void findPairs() {
-		// Copy of original set
-		TreeSet<Card> tmp = new TreeSet<Card>(set);
-		// Map of counted carts, where card instance is a key and the value is
-		// its frequency in set
-		TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
-		// Moving cards from set to map and computing frequency
-		while (!tmp.isEmpty()) {
-			Integer first = tmp.first().getValue();
-			if (map.containsKey(first))
-				map.put(first, map.get(first) + 1);
-			else
-				map.put(first, 1);
-			tmp.pollFirst();
-		}
-		// for (Integer key : map.keySet())
-		// System.out.println(key + " => " + map.get(key));
-		// Checking rank for every element of set
-		for (Integer key1 : map.keySet()) {
-			if (map.get(key1) == 4) {
-				// Found Four of a Kind
-				setRank(Rank.FOUR_OF_KIND, key1);
-
-			} else if (map.get(key1) == 3) {
-				// Found Three of a Kind or Full
-				for (Integer key2 : map.keySet()) {
-					if (map.get(key2) == 2) {
-						// Found Full
-						setRank(Rank.FULL, key1);
-						if (getRank() == Rank.FULL)
-							setRankSecondCard(key2);
-					} else
-						// Found Three of a Kind
-						setRank(Rank.THREE_OF_KIND, key1);
-				}
-			} else if (map.get(key1) == 2) {
-				// Found one or two Pairs
-				for (Integer key2 : map.keySet())
-					if (map.get(key2) == 2 && key1 != key2) {
-						setRank(Rank.TWO_PAIRS, Math.max(key1, key2));
-						if (getRank() == Rank.TWO_PAIRS)
-							setRankSecondCard(Math.min(key1, key2));
-					}
-				setRank(Rank.ONE_PAIR, key1);
-			} else {
-				// No other options, the best is the highest card
-				setRank(Rank.HIGH_CARD, null);
-			}
-		}
-	}
-
-	/**
-	 * finds order of cards: if exists, add rank card. if exists, add second
-	 * rank card. add descending remainders cards
-	 */
-	private void findPriorityOfKickers() {
-		if (getRank() != Rank.HIGH_CARD && getRankCard() != null)
-			kickers.add(getRankCard());
-		if ((getRank() == Rank.FULL || getRank() == Rank.TWO_PAIRS) && getRankSecondCard() != null)
-			kickers.add(getRankSecondCard());
-		for (Card c : set.descendingSet())
-			if (getRankCard() == null || (getRankCard() != null && c.getValue() != getRankCard()))
-				if (getRankSecondCard() == null || (getRankSecondCard() != null && c.getValue() != getRankSecondCard()))
-					kickers.add(c.getValue());
-	}
-
 	public void findRank() {
-		findPairs();
-		if (getRank() == Rank.HIGH_CARD) {
-			findFlushes();
+		// Map of counted carts, key is card value and value is card frequency
+		// in set
+		Map<Integer, Integer> map = new TreeMap<Integer, Integer>();
+		// Moving cards from set to map and computing frequency and check if
+		// cards has the same color
+		boolean equalKind = true;
+		Iterator<Card> iter = set.iterator();
+		char kind = 'X';
+		while (iter.hasNext()) {
+			Card card = iter.next();
+			// frequency of values
+			if (map.containsKey(card.getValue()))
+				map.put(card.getValue(), map.get(card.getValue()) + 1);
+			else
+				map.put(card.getValue(), 1);
+			// checking color
+			if (kind == 'X')
+				kind = card.getKind();
+			else if (kind != card.getKind())
+				equalKind = false;
 		}
-		findPriorityOfKickers();
+		setSortedByValues.addAll(map.entrySet());
+		for (Entry<Integer, Integer> k : setSortedByValues)
+			System.out.println(k.getKey() + " => " + k.getValue());
+		// get necessary ranked cards
+		Iterator<Entry<Integer, Integer>> iterator = setSortedByValues.iterator();
+		Entry<Integer, Integer> firstRankCard = iterator.next();
+		Entry<Integer, Integer> secondRankCard = iterator.next();
+		Entry<Integer, Integer> lastRankCard = null;
+		while (iterator.hasNext())
+			lastRankCard = iterator.next();
+		System.out.println(lastRankCard);
+		// if cards have consecutive values
+		boolean consecutiveValues = false;
+		System.out.println(consecutiveValues + " " + firstRankCard.getKey() + " " + equalKind);
+		if (lastRankCard != null)
+			consecutiveValues = (firstRankCard.getKey() - lastRankCard.getKey() == 4);
+		// Checking rank for every element of set
+		if (firstRankCard.getValue() == 4) {
+			setRank(Rank.FOUR_OF_KIND, firstRankCard.getKey());
+		} else if (firstRankCard.getValue() == 3 && secondRankCard.getValue() == 2) {
+			setRank(Rank.FULL, firstRankCard.getKey());
+			setRankSecondCard(secondRankCard.getKey());
+		} else if (firstRankCard.getValue() == 3) {
+			setRank(Rank.THREE_OF_KIND, firstRankCard.getKey());
+		} else if (firstRankCard.getValue() == 2 && secondRankCard.getValue() == 2) {
+			setRank(Rank.TWO_PAIRS, firstRankCard.getKey());
+			setRankSecondCard(secondRankCard.getKey());
+		} else if (firstRankCard.getValue() == 2) {
+			setRank(Rank.ONE_PAIR, firstRankCard.getKey());
+		} else if (consecutiveValues && firstRankCard.getKey() == 14 && equalKind) {
+			setRank(Rank.ROYAL_FLUSH);
+		} else if (consecutiveValues && equalKind) {
+			setRank(Rank.STRAIGHT_FLUSH);
+		} else if (equalKind) {
+			setRank(Rank.FLUSH);
+		} else if (consecutiveValues) {
+			setRank(Rank.STRAIGHT);
+		} else {
+			setRank(Rank.HIGH_CARD, null);
+		}
 	}
 
 	public int compareTo(Hand o) {
 		if (this.getRank().getValue() - o.getRank().getValue() != 0)
 			return this.getRank().getValue() - o.getRank().getValue();
-		int i = 0;
-		while (this.kickers.get(i) - o.kickers.get(i) == 0)
-			i++;
-		return this.kickers.get(i) - o.kickers.get(i);
+		Iterator<Entry<Integer, Integer>> it1 = this.setSortedByValues.iterator();
+		Iterator<Entry<Integer, Integer>> it2 = o.setSortedByValues.iterator();
+		Integer kicker1 = null;
+		Integer kicker2 = null;
+		while (it1.hasNext() && it2.hasNext() && kicker1 == kicker2) {
+			kicker1 = it1.next().getKey();
+			kicker2 = it2.next().getKey();
+		}
+		return kicker1 - kicker2;
+
+	}
+
+	/**
+	 * set rank
+	 * 
+	 * @param rank
+	 */
+	private void setRank(Rank rank) {
+		this.rank = (this.rank.compareTo(rank) <= -1 || rank == null) ? rank : this.rank;
+	}
+
+	/**
+	 * set rank and the rank card
+	 * 
+	 * @param rank
+	 * @param rankValue
+	 */
+	private void setRank(Rank rank, Integer rankValue) {
+		if (this.rank.compareTo(rank) <= -1 || rank == null) {
+			this.rank = rank;
+			setRankCard(rankValue);
+		}
+	}
+
+	private void setRankCard(Integer rankValue) {
+		this.rankCard = rankValue;
+	}
+
+	private void setRankSecondCard(Integer rankSecondCard) {
+		this.rankSecondCard = rankSecondCard;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.capgemini.pockerHands;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,8 +19,13 @@ public class PokerTest {
 	@Before
 	public void initializeHand() {
 		h = new Hand();
+		System.out.println("Nowy test");
 	}
 
+	@After
+	public void endTest(){
+		System.out.println("Koniec testu");
+	}
 	@Test
 	public void shouldReturnStraightWhen6D7S8C9HTD() {
 		h.addCard(new Card("7S"));
@@ -27,7 +33,7 @@ public class PokerTest {
 		h.addCard(new Card("TD"));
 		h.addCard(new Card("9H"));
 		h.addCard(new Card("8C"));
-		h.findFlushes();
+		h.findRank();
 		assertEquals(Rank.STRAIGHT, h.getRank());
 	}
 
@@ -38,7 +44,7 @@ public class PokerTest {
 		h.addCard(new Card("8D"));
 		h.addCard(new Card("TD"));
 		h.addCard(new Card("QD"));
-		h.findFlushes();
+		h.findRank();
 		assertEquals(Rank.FLUSH, h.getRank());
 	}
 
@@ -49,18 +55,19 @@ public class PokerTest {
 		h.addCard(new Card("9H"));
 		h.addCard(new Card("8H"));
 		h.addCard(new Card("7H"));
-		h.findFlushes();
+		h.findRank();
 		assertEquals(Rank.STRAIGHT_FLUSH, h.getRank());
 	}
 
 	@Test
 	public void shouldReturnRoyalFlushWhenASKSQSJSTS() {
+		System.out.println("dudud");
 		h.addCard(new Card("AS"));
 		h.addCard(new Card("QS"));
 		h.addCard(new Card("JS"));
 		h.addCard(new Card("KS"));
-		h.addCard(new Card("10S"));
-		h.findFlushes();
+		h.addCard(new Card("TS"));
+		h.findRank();
 		assertEquals(Rank.ROYAL_FLUSH, h.getRank());
 	}
 
@@ -72,7 +79,7 @@ public class PokerTest {
 		h.addCard(new Card("9H"));
 		h.addCard(new Card("QH"));
 		h.addCard(new Card("9D"));
-		h.findPairs();
+		h.findRank();
 		assertEquals(Rank.ONE_PAIR, h.getRank());
 	}
 
@@ -129,7 +136,7 @@ public class PokerTest {
 	}
 	
 	@Test
-	public void shouldReturnFailureWhen469QQvs367QQ() {
+	public void shouldReturnFailureWhen29AAAvs3367TD() {
 		Hand h1, h2;
 		h1 = new Hand("2D", "9C", "AS", "AH", "AC");
 		h2 = new Hand("3D", "6D", "7D", "TD", "QD");

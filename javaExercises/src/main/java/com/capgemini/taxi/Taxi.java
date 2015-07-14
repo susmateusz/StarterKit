@@ -1,10 +1,14 @@
 package com.capgemini.taxi;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Taxi implements Subject, Runnable {
+	private static final int TAXI_WIDTH = 20;
+	private static final int TAXI_LENGTH = 40;
 	private static final long UPDATE_TIME = 500;
 	private static final int MAX_SPEED = 10;
 	public static int counter = 0;
@@ -68,7 +72,7 @@ public class Taxi implements Subject, Runnable {
 
 	public void run() {
 		while (true) {
-			move();
+			update();
 			notifyObservers();
 			try {
 				Thread.sleep(Taxi.UPDATE_TIME);
@@ -78,13 +82,25 @@ public class Taxi implements Subject, Runnable {
 		}
 	}
 
-	synchronized public void move() {
+	synchronized public void update() {
 		Random rand = new Random();
 		int dist = rand.nextInt(Taxi.MAX_SPEED);
+		angle = 0;
 		setX((int)(getX() + dist*Math.cos(angle)));
 		setY((int)(getY() + dist*Math.sin(angle)));
 		angle += rand.nextDouble()%Math.PI/4-Math.PI/8;
 	}
+
+	public void draw(Graphics g) {
+		g.setColor(Color.red);
+		g.fillRect(x-TAXI_LENGTH, y-TAXI_WIDTH, TAXI_LENGTH, TAXI_WIDTH);
+		System.out.println("Komponent");
+		
+	}
+
+
+
+
 	
 //	public void draw(Graphics g) {
 //		g.setColor(new Color(150,150,150));

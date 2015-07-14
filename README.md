@@ -8,6 +8,6 @@ javaExcercises - 02.07.2015
 	* nodes - finished, comments, tests  
 	* pascalrectangle - finished, comments, tests  
 	* placeToSplit - finished, comments, tests  
-	* pokerHands - finished, no comments, tests  
+	* pokerHands - finished, comments, tests  
 	* pythagorean - finished, comments, tests  
-	* taxi - not finished, no comments, no tests  
+	* taxi - finished, comments, no tests  

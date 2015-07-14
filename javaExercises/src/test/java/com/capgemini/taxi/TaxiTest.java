@@ -1,8 +1,9 @@
 package com.capgemini.taxi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.assertj.core.api.Fail;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -11,6 +11,9 @@ public class Cell implements Cloneable{
 		this.y = y;
 		
 	}
+	public Cell(int state) {
+		this.state = state;
+	}
 
 	public int getState() {
 		return state;

@@ -1,16 +1,25 @@
 package com.msus.gameOfLife;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameOfLife implements CellulatAutomation {
 
 	List<Cell> grid = new ArrayList<Cell>();
+	Map<ArrayList<Integer>,Cell> grid2 = new HashMap<ArrayList<Integer>,Cell>();
 
 	public GameOfLife(int n, int m) {
 		for (int i = 0; i < n; i++)
-			for (int j = 0; j < m; j++)
+			for (int j = 0; j < m; j++){
 				grid.add(new Cell(i, j, 0));
+				ArrayList<Integer> coords = new ArrayList<Integer>();
+				coords.add(i);
+				coords.add(j);
+				grid2.put(coords, new Cell(0));
+			}
+		System.out.println(grid2);
 	}
 
 	@Override

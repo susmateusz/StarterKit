@@ -1,6 +1,5 @@
 package com.msus.GameOfLifeTests;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -11,10 +10,11 @@ import org.junit.Test;
 
 import com.msus.GameOfLifeController.GameOfLifeController;
 import com.msus.GameOfLifeMVCInterfaces.Controller;
+import com.msus.GameOfLifeMVCInterfaces.View;
 import com.msus.GameOfLifeModel.CellulatAutomation;
 import com.msus.GameOfLifeModel.GameOfLife;
 import com.msus.GameOfLifeModel.State;
-import com.msus.GameOfLifeView.GOLConsoleView;
+import com.msus.GameOfLifeView.GOLSwingView;
 
 public class GameOfLifeTest {
 
@@ -160,23 +160,36 @@ public class GameOfLifeTest {
 		assertTrue(expected.containsAll(result) && result.containsAll(expected));
 	}
 
+//	@Test
+//	public void shouldFinishAfter32Moves() {
+//		GameOfLife gol = new GameOfLife(10, 10);
+//		gol.setCellState(Arrays.asList(new Integer[] { 0, 1 }), State.ALIVE);
+//		gol.setCellState(Arrays.asList(new Integer[] { 1, 2 }), State.ALIVE);
+//		gol.setCellState(Arrays.asList(new Integer[] { 2, 0 }), State.ALIVE);
+//		gol.setCellState(Arrays.asList(new Integer[] { 2, 1 }), State.ALIVE);
+//		gol.setCellState(Arrays.asList(new Integer[] { 2, 2 }), State.ALIVE);
+//		GOLConsoleView console = new GOLConsoleView(10, 10);
+//		Controller control = new GameOfLifeController(gol,console);
+//		int i = 0;
+//		while (!control.isGameFinished()){
+//			control.nextMoveEvent();
+//			i++;
+//		}
+//		assertEquals(32,i);
+//	}
+
 	@Test
-	public void shouldFinishAfter32Moves() {
+	public void shouldRunSwingView() {
 		GameOfLife gol = new GameOfLife(10, 10);
 		gol.setCellState(Arrays.asList(new Integer[] { 0, 1 }), State.ALIVE);
 		gol.setCellState(Arrays.asList(new Integer[] { 1, 2 }), State.ALIVE);
 		gol.setCellState(Arrays.asList(new Integer[] { 2, 0 }), State.ALIVE);
 		gol.setCellState(Arrays.asList(new Integer[] { 2, 1 }), State.ALIVE);
 		gol.setCellState(Arrays.asList(new Integer[] { 2, 2 }), State.ALIVE);
-		GOLConsoleView console = new GOLConsoleView(10, 10);
-		Controller control = new GameOfLifeController(gol,console);
-		int i = 0;
-		while (!control.isGameFinished()){
-			control.nextMoveEvent();
-			i++;
-		}
-		assertEquals(32,i);
-
+		View swingView = new GOLSwingView(30,30);
+		GameOfLifeController control = new GameOfLifeController(gol,swingView);
+		control.setSpeed(30);
+		control.start();
 	}
 
 }

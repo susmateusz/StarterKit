@@ -9,7 +9,7 @@ import java.util.Observer;
 import com.msus.GameOfLifeMVCInterfaces.Model;
 import com.msus.GameOfLifeMVCInterfaces.View;
 
-public class GOLConsoleView implements View, Observer {
+public class GOLConsoleView implements View {
 
 	private List<List<Integer>> active = new ArrayList<List<Integer>>();
 	private List<Integer> bounds = new ArrayList<Integer>();

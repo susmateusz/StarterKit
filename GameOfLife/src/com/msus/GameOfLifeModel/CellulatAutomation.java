@@ -2,7 +2,9 @@ package com.msus.GameOfLifeModel;
 
 import java.util.List;
 
-public interface CellulatAutomation {
+import com.msus.GameOfLifeMVCInterfaces.Model;
+
+public interface CellulatAutomation extends Model {
 
 	void setCellState(List<Integer> coords,State state);
 

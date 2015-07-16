@@ -13,6 +13,8 @@ public class GameOfLifeController implements Controller {
 	private View view;
 
 	private boolean isGameFinished = false;
+	
+	private int speed=300;
 
 	public GameOfLifeController(Model model, View view) {
 		super();
@@ -21,6 +23,12 @@ public class GameOfLifeController implements Controller {
 		model.addObserver(view);
 		view.setModel(model);
 		view.print();
+		try {
+			Thread.sleep(speed);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -44,6 +52,12 @@ public class GameOfLifeController implements Controller {
 			return;
 		}
 		view.print();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public boolean isGameFinished() {
@@ -52,6 +66,22 @@ public class GameOfLifeController implements Controller {
 
 	public void setGameFinished(boolean isGameFinished) {
 		this.isGameFinished = isGameFinished;
+	}
+
+	public void setSpeed(int i) {
+		this.speed = i;
+	}
+
+	public void start() {
+		while (!isGameFinished()){
+			System.out.println(speed);
+			nextMoveEvent();
+			try {
+				Thread.sleep(speed);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

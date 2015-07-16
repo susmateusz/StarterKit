@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 import com.msus.GameOfLifeMVCInterfaces.Model;
 
-public class GameOfLife extends Observable implements CellulatAutomation,Model {
+public class GameOfLife extends Observable implements CellulatAutomation {
 
 	private Map<List<Integer>, Cell> grid = new HashMap<List<Integer>, Cell>();
 	private List<Integer> bounds = new ArrayList<Integer>();

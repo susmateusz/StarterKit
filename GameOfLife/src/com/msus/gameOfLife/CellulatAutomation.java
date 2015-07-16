@@ -1,9 +1,13 @@
 package com.msus.gameOfLife;
 
+import java.util.List;
+
 public interface CellulatAutomation {
 
-	void setAliveCell(int i, int j);
+	void setCellState(List<Integer> coords,int state);
 
 	void next();
+
+	List<List<Integer>> toArrayOfState(int state);
 
 }

@@ -1,4 +1,4 @@
-package com.msus.gameOfLife;
+package com.msus.GameOfLifeTests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,33 +9,43 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.msus.GameOfLifeController.GameOfLifeController;
+import com.msus.GameOfLifeMVCInterfaces.Controller;
+import com.msus.GameOfLifeModel.CellulatAutomation;
+import com.msus.GameOfLifeModel.GameOfLife;
+import com.msus.GameOfLifeModel.State;
+import com.msus.GameOfLifeView.GOLConsoleView;
+
 public class GameOfLifeTest {
 
 	@Test
 	public void shouldReturnEmptyBoardWhenEmptyInput() {
+		List<List<Integer>> expected = new ArrayList<List<Integer>>();
 		CellulatAutomation gol = new GameOfLife(3, 3);
 		gol.next();
-		String expected = new String("");
-		assertEquals(expected, gol.toString());
+		List<List<Integer>> result = gol.toArrayOfState(State.ALIVE);
+		assertTrue(expected.containsAll(result) && result.containsAll(expected));
 	}
 
 	@Test
 	public void shouldReturnEmptyWhen000_010_000() {
+		List<List<Integer>> expected = new ArrayList<List<Integer>>();
 		CellulatAutomation gol = new GameOfLife(3, 3);
 		gol.setCellState(Arrays.asList(new Integer[] { 1, 1 }), State.ALIVE);
 		gol.next();
-		String expected = new String("");
-		assertEquals(expected, gol.toString());
+		List<List<Integer>> result = gol.toArrayOfState(State.ALIVE);
+		assertTrue(expected.containsAll(result) && result.containsAll(expected));
 	}
 
 	@Test
 	public void shouldReturnEmptyWhen000_011_000() {
+		List<List<Integer>> expected = new ArrayList<List<Integer>>();
 		CellulatAutomation gol = new GameOfLife(3, 3);
 		gol.setCellState(Arrays.asList(new Integer[] { 1, 1 }), State.ALIVE);
 		gol.setCellState(Arrays.asList(new Integer[] { 1, 2 }), State.ALIVE);
 		gol.next();
-		String expected = new String("");
-		assertEquals(expected, gol.toString());
+		List<List<Integer>> result = gol.toArrayOfState(State.ALIVE);
+		assertTrue(expected.containsAll(result) && result.containsAll(expected));
 	}
 
 	@Test
@@ -128,6 +138,45 @@ public class GameOfLifeTest {
 		gol.next();
 		List<List<Integer>> result = gol.toArrayOfState(State.ALIVE);
 		assertTrue(expected.containsAll(result) && result.containsAll(expected));
+	}
+
+	@Test
+	public void shouldMoveGlider2MovesForward() {
+		List<List<Integer>> expected = new ArrayList<List<Integer>>();
+		expected.add(Arrays.asList(new Integer[] { 2, 0 }));
+		expected.add(Arrays.asList(new Integer[] { 3, 1 }));
+		expected.add(Arrays.asList(new Integer[] { 3, 2 }));
+		expected.add(Arrays.asList(new Integer[] { 2, 2 }));
+		expected.add(Arrays.asList(new Integer[] { 1, 2 }));
+		CellulatAutomation gol = new GameOfLife(10, 10);
+		gol.setCellState(Arrays.asList(new Integer[] { 0, 1 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 1, 2 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 2, 0 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 2, 1 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 2, 2 }), State.ALIVE);
+		gol.next();
+		gol.next();
+		List<List<Integer>> result = gol.toArrayOfState(State.ALIVE);
+		assertTrue(expected.containsAll(result) && result.containsAll(expected));
+	}
+
+	@Test
+	public void shouldFinishAfter32Moves() {
+		GameOfLife gol = new GameOfLife(10, 10);
+		gol.setCellState(Arrays.asList(new Integer[] { 0, 1 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 1, 2 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 2, 0 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 2, 1 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 2, 2 }), State.ALIVE);
+		GOLConsoleView console = new GOLConsoleView(10, 10);
+		Controller control = new GameOfLifeController(gol,console);
+		int i = 0;
+		while (!control.isGameFinished()){
+			control.nextMoveEvent();
+			i++;
+		}
+		assertEquals(32,i);
+
 	}
 
 }

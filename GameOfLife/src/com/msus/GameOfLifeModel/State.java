@@ -1,4 +1,4 @@
-package com.msus.gameOfLife;
+package com.msus.GameOfLifeModel;
 
 public enum State {
 	DEAD(0),ALIVE(1);

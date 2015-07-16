@@ -1,16 +1,12 @@
-package com.msus.gameOfLife;
+package com.msus.GameOfLifeModel;
 
 import java.util.List;
 
 public class Cell implements Cloneable{
 	private State state;
-//	private int x;
-//	private int y;
 
 	public Cell(int x, int y,State state) {
 		this.state = state;
-//		this.x = x;
-//		this.y = y;
 		
 	}
 	public Cell(State state) {
@@ -28,13 +24,6 @@ public class Cell implements Cloneable{
 	@Override
 	public String toString() {
 		return "C(" + state +")";
-//		return "C(" + x + ", " + y +", "+state+")";
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		Cell c = (Cell)obj;
-		return this.getState()==c.getState();
 	}
 	
 	@Override
@@ -42,15 +31,23 @@ public class Cell implements Cloneable{
 		return new Cell(getState());
 	}
 
-	public void next(List<Cell> neighbourhood) {
+	public void nextState(List<Cell> neighbourhood) {
 		int sum = 0;
 		for(Cell cell : neighbourhood){
 			sum += cell.getState().intValue();
 		}
-		if(sum == 3 || (sum==2 && getState()==State.ALIVE))
-			setState(State.ALIVE);
-		else
+		if (shouldDie(sum))
 			setState(State.DEAD);
+		else if ( shouldBorn(sum))
+			setState(State.ALIVE);
+	}
+	
+	private boolean shouldDie(int sum){
+		return getState()==State.ALIVE && sum!=2 && sum != 3;
+	}
+	
+	private boolean shouldBorn(int sum){
+		return getState()==State.DEAD && sum == 3;
 	}
 
 	

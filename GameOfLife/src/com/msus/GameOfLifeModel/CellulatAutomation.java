@@ -1,4 +1,4 @@
-package com.msus.gameOfLife;
+package com.msus.GameOfLifeModel;
 
 import java.util.List;
 

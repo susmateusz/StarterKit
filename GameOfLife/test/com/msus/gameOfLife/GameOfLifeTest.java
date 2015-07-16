@@ -1,6 +1,7 @@
 package com.msus.gameOfLife;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +22,7 @@ public class GameOfLifeTest {
 	@Test
 	public void shouldReturnEmptyWhen000_010_000() {
 		CellulatAutomation gol = new GameOfLife(3, 3);
-		gol.setCellState(Arrays.asList(new Integer[] { 1, 1 }), 1);
+		gol.setCellState(Arrays.asList(new Integer[] { 1, 1 }), State.ALIVE);
 		gol.next();
 		String expected = new String("");
 		assertEquals(expected, gol.toString());
@@ -30,8 +31,8 @@ public class GameOfLifeTest {
 	@Test
 	public void shouldReturnEmptyWhen000_011_000() {
 		CellulatAutomation gol = new GameOfLife(3, 3);
-		gol.setCellState(Arrays.asList(new Integer[] { 1, 1 }), 1);
-		gol.setCellState(Arrays.asList(new Integer[] { 1, 2 }), 1);
+		gol.setCellState(Arrays.asList(new Integer[] { 1, 1 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 1, 2 }), State.ALIVE);
 		gol.next();
 		String expected = new String("");
 		assertEquals(expected, gol.toString());
@@ -45,10 +46,10 @@ public class GameOfLifeTest {
 		expected.add(Arrays.asList(new Integer[] { 2, 1 }));
 		expected.add(Arrays.asList(new Integer[] { 2, 2 }));
 		CellulatAutomation gol = new GameOfLife(3, 3);
-		for(List<Integer> cell : expected)
-			gol.setCellState(cell, 1);
+		for (List<Integer> cell : expected)
+			gol.setCellState(cell, State.ALIVE);
 		gol.next();
-		List<List<Integer>> result = gol.toArrayOfState(1);
+		List<List<Integer>> result = gol.toArrayOfState(State.ALIVE);
 		assertTrue(expected.containsAll(result) && result.containsAll(expected));
 	}
 
@@ -61,76 +62,72 @@ public class GameOfLifeTest {
 		expected.add(Arrays.asList(new Integer[] { 1, 2 }));
 		expected.add(Arrays.asList(new Integer[] { 2, 1 }));
 		CellulatAutomation gol = new GameOfLife(3, 3);
-		for(List<Integer> cell : expected)
-			gol.setCellState(cell, 1);
+		for (List<Integer> cell : expected)
+			gol.setCellState(cell, State.ALIVE);
 		gol.next();
-		List<List<Integer>> result = gol.toArrayOfState(1);
+		List<List<Integer>> result = gol.toArrayOfState(State.ALIVE);
 		assertTrue(expected.containsAll(result) && result.containsAll(expected));
 	}
 
-	 @Test
-	 public void shouldReturn1100_1000_0001_0011When1100_1100_0011_0011(){
-	 List<List<Integer>> expected = new ArrayList<List<Integer>>();
-	 expected.add(Arrays.asList(new Integer[] { 0, 0 }));
-	 expected.add(Arrays.asList(new Integer[] { 0, 1 }));
-	 expected.add(Arrays.asList(new Integer[] { 1, 0 }));
-	 expected.add(Arrays.asList(new Integer[] { 2, 3 }));
-	 expected.add(Arrays.asList(new Integer[] { 3, 2 }));
-	 expected.add(Arrays.asList(new Integer[] { 3, 3 }));
-	 CellulatAutomation gol = new GameOfLife(4, 4);
-	 gol.setCellState(Arrays.asList(new Integer[] { 0, 0 }), 1);
-	 gol.setCellState(Arrays.asList(new Integer[] { 0, 1 }), 1);
-	 gol.setCellState(Arrays.asList(new Integer[] { 1, 0 }), 1);
-	 gol.setCellState(Arrays.asList(new Integer[] { 1, 1 }), 1);
-	 gol.setCellState(Arrays.asList(new Integer[] { 2, 2 }), 1);
-	 gol.setCellState(Arrays.asList(new Integer[] { 2, 3 }), 1);
-	 gol.setCellState(Arrays.asList(new Integer[] { 3, 2 }), 1);
-	 gol.setCellState(Arrays.asList(new Integer[] { 3, 3 }), 1);
-	 gol.next();
-	 List<List<Integer>> result = gol.toArrayOfState(1);
-	 assertTrue(expected.containsAll(result) && result.containsAll(expected));
-	 }
-	 
-	 
-	 @Test
-	 public void shouldReturn1100_1100_0011_0011When1100_1000_0001_0011(){
-		 List<List<Integer>> expected = new ArrayList<List<Integer>>();
-		 expected.add(Arrays.asList(new Integer[] { 0, 0 }));
-		 expected.add(Arrays.asList(new Integer[] { 0, 1 }));
-		 expected.add(Arrays.asList(new Integer[] { 1, 0 }));
-		 expected.add(Arrays.asList(new Integer[] { 1, 1 }));
-		 expected.add(Arrays.asList(new Integer[] { 2, 2 }));
-		 expected.add(Arrays.asList(new Integer[] { 2, 3 }));
-		 expected.add(Arrays.asList(new Integer[] { 3, 2 }));
-		 expected.add(Arrays.asList(new Integer[] { 3, 3 }));
-		 CellulatAutomation gol = new GameOfLife(4, 4);
-		 gol.setCellState(Arrays.asList(new Integer[] { 0, 0 }), 1);
-		 gol.setCellState(Arrays.asList(new Integer[] { 0, 1 }), 1);
-		 gol.setCellState(Arrays.asList(new Integer[] { 1, 0 }), 1);
-		 gol.setCellState(Arrays.asList(new Integer[] { 2, 3 }), 1);
-		 gol.setCellState(Arrays.asList(new Integer[] { 3, 2 }), 1);
-		 gol.setCellState(Arrays.asList(new Integer[] { 3, 3 }), 1);
-		 gol.next();
-		 List<List<Integer>> result = gol.toArrayOfState(1);
-		 assertTrue(expected.containsAll(result) && result.containsAll(expected));
-	 }
-	 
-	 @Test
-	 public void shouldReturn000_111_000When010_010_010(){
-		 List<List<Integer>> expected = new ArrayList<List<Integer>>();
-		 expected.add(Arrays.asList(new Integer[] { 1, 0 }));
-		 expected.add(Arrays.asList(new Integer[] { 1, 1 }));
-		 expected.add(Arrays.asList(new Integer[] { 1, 2 }));
-		 CellulatAutomation gol = new GameOfLife(3, 3);
-		 gol.setCellState(Arrays.asList(new Integer[] { 0, 1 }), 1);
-		 gol.setCellState(Arrays.asList(new Integer[] { 1, 1 }), 1);
-		 gol.setCellState(Arrays.asList(new Integer[] { 2, 1 }), 1);
-		 gol.next();
-		 List<List<Integer>> result = gol.toArrayOfState(1);
-		 assertTrue(expected.containsAll(result) && result.containsAll(expected));
-	 }
-	 
-	 
-	 
+	@Test
+	public void shouldReturn1100_1000_0001_0011When1100_1100_0011_0011() {
+		List<List<Integer>> expected = new ArrayList<List<Integer>>();
+		expected.add(Arrays.asList(new Integer[] { 0, 0 }));
+		expected.add(Arrays.asList(new Integer[] { 0, 1 }));
+		expected.add(Arrays.asList(new Integer[] { 1, 0 }));
+		expected.add(Arrays.asList(new Integer[] { 2, 3 }));
+		expected.add(Arrays.asList(new Integer[] { 3, 2 }));
+		expected.add(Arrays.asList(new Integer[] { 3, 3 }));
+		CellulatAutomation gol = new GameOfLife(4, 4);
+		gol.setCellState(Arrays.asList(new Integer[] { 0, 0 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 0, 1 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 1, 0 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 1, 1 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 2, 2 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 2, 3 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 3, 2 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 3, 3 }), State.ALIVE);
+		gol.next();
+		List<List<Integer>> result = gol.toArrayOfState(State.ALIVE);
+		assertTrue(expected.containsAll(result) && result.containsAll(expected));
+	}
+
+	@Test
+	public void shouldReturn1100_1100_0011_0011When1100_1000_0001_0011() {
+		List<List<Integer>> expected = new ArrayList<List<Integer>>();
+		expected.add(Arrays.asList(new Integer[] { 0, 0 }));
+		expected.add(Arrays.asList(new Integer[] { 0, 1 }));
+		expected.add(Arrays.asList(new Integer[] { 1, 0 }));
+		expected.add(Arrays.asList(new Integer[] { 1, 1 }));
+		expected.add(Arrays.asList(new Integer[] { 2, 2 }));
+		expected.add(Arrays.asList(new Integer[] { 2, 3 }));
+		expected.add(Arrays.asList(new Integer[] { 3, 2 }));
+		expected.add(Arrays.asList(new Integer[] { 3, 3 }));
+		CellulatAutomation gol = new GameOfLife(4, 4);
+		gol.setCellState(Arrays.asList(new Integer[] { 0, 0 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 0, 1 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 1, 0 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 2, 3 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 3, 2 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 3, 3 }), State.ALIVE);
+		gol.next();
+		List<List<Integer>> result = gol.toArrayOfState(State.ALIVE);
+		assertTrue(expected.containsAll(result) && result.containsAll(expected));
+	}
+
+	@Test
+	public void shouldReturn000_111_000When010_010_010() {
+		List<List<Integer>> expected = new ArrayList<List<Integer>>();
+		expected.add(Arrays.asList(new Integer[] { 1, 0 }));
+		expected.add(Arrays.asList(new Integer[] { 1, 1 }));
+		expected.add(Arrays.asList(new Integer[] { 1, 2 }));
+		CellulatAutomation gol = new GameOfLife(3, 3);
+		gol.setCellState(Arrays.asList(new Integer[] { 0, 1 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 1, 1 }), State.ALIVE);
+		gol.setCellState(Arrays.asList(new Integer[] { 2, 1 }), State.ALIVE);
+		gol.next();
+		List<List<Integer>> result = gol.toArrayOfState(State.ALIVE);
+		assertTrue(expected.containsAll(result) && result.containsAll(expected));
+	}
 
 }

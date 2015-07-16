@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface CellulatAutomation {
 
-	void setCellState(List<Integer> coords,int state);
+	void setCellState(List<Integer> coords,State state);
 
 	void next();
 
-	List<List<Integer>> toArrayOfState(int state);
+	List<List<Integer>> toArrayOfState(State state);
 
 }

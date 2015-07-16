@@ -17,7 +17,7 @@ public class GameOfLife implements CellulatAutomation {
 				ArrayList<Integer> coords = new ArrayList<Integer>();
 				coords.add(i);
 				coords.add(j);
-				grid2.put(coords, new Cell(0));
+				grid2.put(coords, new Cell(State.DEAD));
 			}
 		dims.add(new Integer(n));
 		dims.add(new Integer(m));
@@ -28,14 +28,14 @@ public class GameOfLife implements CellulatAutomation {
 		StringBuilder result = new StringBuilder();
 		for (List<Integer> key : grid2.keySet()) {
 //			System.out.println(key + " " + grid2.get(key).getState());
-			if (grid2.get(key).getState() != 0) {
+			if (grid2.get(key).getState() != State.DEAD) {
 				result.append("C"+key+'\n');
 			}
 		}
 		return result.toString();
 	}
 	
-	public List<List<Integer>> toArrayOfState(int state){
+	public List<List<Integer>> toArrayOfState(State state){
 		List<List<Integer>> result = new ArrayList<List<Integer>>();
 		for (List<Integer> key : grid2.keySet()) {
 			if (grid2.get(key).getState() == state) {
@@ -46,7 +46,7 @@ public class GameOfLife implements CellulatAutomation {
 	}
 
 	@Override
-	public void setCellState(List<Integer> coords, int state) {
+	public void setCellState(List<Integer> coords, State state) {
 		grid2.put(coords, new Cell(state));
 	}
 

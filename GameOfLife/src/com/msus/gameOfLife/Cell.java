@@ -3,44 +3,27 @@ package com.msus.gameOfLife;
 import java.util.List;
 
 public class Cell implements Cloneable{
-	private int state;
+	private State state;
 //	private int x;
 //	private int y;
 
-	public Cell(int x, int y,int state) {
+	public Cell(int x, int y,State state) {
 		this.state = state;
 //		this.x = x;
 //		this.y = y;
 		
 	}
-	public Cell(int state) {
+	public Cell(State state) {
 		this.state = state;
 	}
 
-	public int getState() {
+	public State getState() {
 		return state;
 	}
 
-	public void setState(int state) {
+	public void setState(State state) {
 		this.state = state;
 	}
-
-
-//	public int getX() {
-//		return x;
-//	}
-//
-//	public void setX(int x) {
-//		this.x = x;
-//	}
-//
-//	public int getY() {
-//		return y;
-//	}
-//
-//	public void setY(int y) {
-//		this.y = y;
-//	}
 
 	@Override
 	public String toString() {
@@ -62,12 +45,12 @@ public class Cell implements Cloneable{
 	public void next(List<Cell> neighbourhood) {
 		int sum = 0;
 		for(Cell cell : neighbourhood){
-			sum += cell.getState();
+			sum += cell.getState().intValue();
 		}
-		if(sum == 3 || (sum==2 && getState()==1))
-			setState(1);
+		if(sum == 3 || (sum==2 && getState()==State.ALIVE))
+			setState(State.ALIVE);
 		else
-			setState(0);
+			setState(State.DEAD);
 	}
 
 	

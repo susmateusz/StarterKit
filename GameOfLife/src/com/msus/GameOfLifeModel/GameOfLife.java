@@ -11,6 +11,8 @@ public class GameOfLife extends Observable implements CellulatAutomation {
 
 	private Map<List<Integer>, Cell> grid = new HashMap<List<Integer>, Cell>();
 	private List<Integer> bounds = new ArrayList<Integer>();
+	
+	public long nextFunctionCounter = 0;
 
 	public GameOfLife(int n, int m) {
 		for (int i = 0; i < n; i++)
@@ -42,16 +44,18 @@ public class GameOfLife extends Observable implements CellulatAutomation {
 	@Override
 	public void next() {
 		Map<List<Integer>, Cell> changedCells = new HashMap<List<Integer>, Cell>();
-		for (Entry<List<Integer>, Cell> pair : grid.entrySet()) {
-			Cell tmpCell = (Cell) pair.getValue().clone();
-			List<List<Integer>> surroundingCoords = getSurroundingCoords(pair.getKey());
+		for (List<Integer> coords : grid.keySet()) {
+			nextFunctionCounter+=1;
+			System.out.println("Next: "+nextFunctionCounter);
+			Cell tmpCell = (Cell) grid.get(coords).clone();
+			List<List<Integer>> surroundingCoords = getSurroundingCoords(coords);
 			List<Cell> surroundCells = new ArrayList<Cell>();
-			for (List<Integer> coords : surroundingCoords)
-				surroundCells.add(grid.get(coords));
+			for (List<Integer> c : surroundingCoords)
+				surroundCells.add(grid.get(c));
 			tmpCell.nextState(surroundCells);
 			// if state of cell was changed
-			if (tmpCell.getState() != pair.getValue().getState()) {
-				changedCells.put(pair.getKey(), tmpCell);
+			if (tmpCell.getState() != grid.get(coords).getState()) {
+				changedCells.put(coords, tmpCell);
 			}
 		}
 		// updating
@@ -93,6 +97,11 @@ public class GameOfLife extends Observable implements CellulatAutomation {
 		setChanged();
 		notifyObservers(toArrayOfState(State.ALIVE) );
 		
+	}
+
+	@Override
+	public State getCellState(List<Integer> coords) {
+		return grid.get(coords).getState();
 	}
 	
 	

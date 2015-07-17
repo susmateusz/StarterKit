@@ -2,8 +2,11 @@ package com.msus.GameOfLifeView;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -45,14 +48,16 @@ public class GOLSwingView extends JFrame implements View {
 	JButton btnStop;
 	JButton btnAddGlider;
 	JComboBox<GOLPattern> selectPattern;
+	JLabel textRotation;
 	protected boolean isSetPattern = false;
 	protected int pattern = 0;
+	protected int rotation = 0;
 
 	public GOLSwingView(int n, int m) {
 		bounds.add(n);
 		bounds.add(m);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 26 + bounds.get(1) * CELL_SIZE + 200, 40 + bounds.get(0) * CELL_SIZE);
+		setBounds(10, 10, 26 + bounds.get(1) * CELL_SIZE + 200, 40 + bounds.get(0) * CELL_SIZE);
 		contentPane = new GamePanel(bounds);
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		contentPane.setLayout(null);
@@ -73,6 +78,7 @@ public class GOLSwingView extends JFrame implements View {
 		JLabel labelSpeed = new JLabel("FPS");
 		labelSpeed.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * 1, 200, 30);
 		contentPane.add(labelSpeed);
+		
 		textSpeed = new JTextField("50");
 		textSpeed.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * 2, 200, 30);
 		contentPane.add(textSpeed);
@@ -117,6 +123,10 @@ public class GOLSwingView extends JFrame implements View {
 		selectPattern.setBackground(Color.WHITE);
 		contentPane.add(selectPattern);
 
+		textRotation = new JLabel("Rotation: "+(rotation*90)+" degrees.[press 'R']");
+		textRotation.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * 7, 200, 30);
+		contentPane.add(textRotation);
+
 		addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -126,7 +136,7 @@ public class GOLSwingView extends JFrame implements View {
 				List<Integer> currentCoords = new ArrayList<Integer>();
 				currentCoords.add((e.getY() - 30) / CELL_SIZE);
 				currentCoords.add((e.getX() - 8) / CELL_SIZE);
-				((GOLPattern) selectPattern.getSelectedItem()).draw(model,currentCoords);
+				((GOLPattern) selectPattern.getSelectedItem()).draw(model, currentCoords, rotation);
 				model.hasChanged();
 				model.notifyObservers(model.toArrayOfState(State.ALIVE));
 				active = model.getData();
@@ -138,7 +148,8 @@ public class GOLSwingView extends JFrame implements View {
 
 		});
 
-		addSliders();
+		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		manager.addKeyEventDispatcher(new GameDispatcher());
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -150,32 +161,7 @@ public class GOLSwingView extends JFrame implements View {
 			}
 		});
 
-		addWindowListener(new WindowAdapter() {
 
-			@Override
-			public void windowClosing(WindowEvent e) {
-				controller.setGameFinished(true);
-				super.windowClosing(e);
-			}
-
-		});
-
-	}
-
-	private void addSliders() {
-		//
-		// btnStop = new JButton("Stop game");
-		// btnStop.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE,
-		// FIELDS_HEIGHT * 4, 200, 30);
-		// btnStop.addActionListener(new ActionListener() {
-		//
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// controller.update(0);
-		// }
-		// });
-		// contentPane.add(btnStop);
-		//
 	}
 
 	@SuppressWarnings("unchecked")
@@ -202,6 +188,20 @@ public class GOLSwingView extends JFrame implements View {
 	@Override
 	public void setController(Controller controller) {
 		this.controller = controller;
+	}
+
+	private class GameDispatcher implements KeyEventDispatcher {
+
+		@Override
+		public boolean dispatchKeyEvent(KeyEvent e) {
+			if(e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode()==82){
+				rotation = (rotation+1) % 4;
+				textRotation.setText("Rotation: "+(rotation*90)+" degrees.[press 'R']");
+				System.out.println(rotation);
+			}
+			return false;
+		}
+
 	}
 
 }

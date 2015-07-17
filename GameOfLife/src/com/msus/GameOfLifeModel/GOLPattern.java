@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum GOLPattern {
-	EMPTY, GLIDER, TOAD, LIGHTWEIGHT_SPACESHIP,GOSPER_GLIDER_GUN;
+	EMPTY, GLIDER, TOAD, LIGHTWEIGHT_SPACESHIP, GOSPER_GLIDER_GUN;
 
 	List<List<Integer>> points;
 
-	public void draw(CellulatAutomation model, List<Integer> currentCoords) {
+	public void draw(CellulatAutomation model, List<Integer> currentCoords, int rot) {
 		List<Integer[]> points = new ArrayList<Integer[]>();
 		if (this == GOLPattern.EMPTY) {
 			points.add(new Integer[] { 0, 0 });
@@ -36,7 +36,7 @@ public enum GOLPattern {
 			points.add(new Integer[] { 3, 1 });
 			points.add(new Integer[] { 3, 2 });
 			points.add(new Integer[] { 3, 3 });
-		} else if ( this == GOLPattern.GOSPER_GLIDER_GUN) {
+		} else if (this == GOLPattern.GOSPER_GLIDER_GUN) {
 			points.add(new Integer[] { 0, 0 });
 			points.add(new Integer[] { 0, 1 });
 			points.add(new Integer[] { 1, 0 });
@@ -75,8 +75,12 @@ public enum GOLPattern {
 			points.add(new Integer[] { -1, 35 });
 		}
 		for (Integer[] p : points) {
-			for (int i = 0; i < p.length; i++)
-				p[i] += currentCoords.get(i);
+			int p0 = p[0];
+			int p1 = p[1];
+			p[0] = p0 * (int) Math.cos(Math.PI * rot / 2) - p1 * (int) Math.sin(Math.PI * rot / 2);
+			p[0] += currentCoords.get(0);
+			p[1] = p0 * (int) Math.sin(Math.PI * rot / 2) + p1 * (int) Math.cos(Math.PI * rot / 2);
+			p[1] += currentCoords.get(1);
 			model.setCellState(Arrays.asList(p), State.ALIVE);
 		}
 	}

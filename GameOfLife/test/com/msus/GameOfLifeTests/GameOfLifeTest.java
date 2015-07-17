@@ -1,6 +1,6 @@
 package com.msus.GameOfLifeTests;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,11 +9,11 @@ import java.util.List;
 import org.junit.Test;
 
 import com.msus.GameOfLifeController.GameOfLifeController;
-import com.msus.GameOfLifeMVCInterfaces.View;
+import com.msus.GameOfLifeMVCInterfaces.Controller;
 import com.msus.GameOfLifeModel.CellulatAutomation;
 import com.msus.GameOfLifeModel.GameOfLife;
 import com.msus.GameOfLifeModel.State;
-import com.msus.GameOfLifeView.GOLSwingView;
+import com.msus.GameOfLifeView.GOLConsoleView;
 
 public class GameOfLifeTest {
 
@@ -141,7 +141,6 @@ public class GameOfLifeTest {
 
 	@Test
 	public void shouldMoveGlider2MovesForward() {
-		System.out.println("Glider.1");
 		List<List<Integer>> expected = new ArrayList<List<Integer>>();
 		expected.add(Arrays.asList(new Integer[] { 2, 0 }));
 		expected.add(Arrays.asList(new Integer[] { 3, 1 }));
@@ -149,7 +148,6 @@ public class GameOfLifeTest {
 		expected.add(Arrays.asList(new Integer[] { 2, 2 }));
 		expected.add(Arrays.asList(new Integer[] { 1, 2 }));
 		CellulatAutomation gol = new GameOfLife(10, 10);
-		System.out.println("Glider.2");
 		gol.setCellState(Arrays.asList(new Integer[] { 0, 1 }), State.ALIVE);
 		gol.setCellState(Arrays.asList(new Integer[] { 1, 2 }), State.ALIVE);
 		gol.setCellState(Arrays.asList(new Integer[] { 2, 0 }), State.ALIVE);
@@ -157,10 +155,8 @@ public class GameOfLifeTest {
 		gol.setCellState(Arrays.asList(new Integer[] { 2, 2 }), State.ALIVE);
 		gol.next();
 		gol.next();
-		System.out.println("Glider.3");
 		List<List<Integer>> result = gol.toArrayOfState(State.ALIVE);
 		assertTrue(expected.containsAll(result) && result.containsAll(expected));
-		System.out.println("Glider.4");
 	}
 
 //	@Test
@@ -194,12 +190,14 @@ public class GameOfLifeTest {
 //		control.setSpeed(30);
 //	}
 
-	@Test
-	public void shouldRunSwingWithFixedParameters() {
-		System.out.println("Fixed.1");
-		GameOfLifeController control = new GameOfLifeController(60,100);
-		System.out.println("Fixed.2");
-		control.setSpeed(30);
-		System.out.println("Fixed.3");
-	}
+//	@Test
+//	public void shouldRunSwingWithFixedParameters() {
+//		System.out.println("Fixed.1");
+//		GameOfLifeController control = new GameOfLifeController(100,140);
+//		System.out.println("Fixed.2");
+//		control.setSpeed(30);
+//		System.out.println("Fixed.3");
+//	}
+		
+		
 }

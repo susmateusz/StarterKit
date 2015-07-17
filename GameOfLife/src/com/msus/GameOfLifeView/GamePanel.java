@@ -28,16 +28,14 @@ public class GamePanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		System.out.println("Painting.");
 		for (int i = 0; i < bounds.get(1); i++) {
 			for (int j = 0; j < bounds.get(0); j++) {
 				g.setColor(new Color(200,200,200));
 				if(active.contains(Arrays.asList(new Integer[]{j,i})))
 					g.setColor(new Color(20,20,20));
-				g.fillRect(i*20, j*20, 18, 18);
+				g.fillRect(i*GOLSwingView.CELL_SIZE, j*GOLSwingView.CELL_SIZE, GOLSwingView.CELL_SIZE-2, GOLSwingView.CELL_SIZE-2);
 			}
 		}
-		g.dispose();
 	}
 	
 	

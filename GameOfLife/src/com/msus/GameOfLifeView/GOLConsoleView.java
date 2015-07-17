@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.msus.GameOfLifeMVCInterfaces.Controller;
 import com.msus.GameOfLifeMVCInterfaces.Model;
 import com.msus.GameOfLifeMVCInterfaces.View;
 
@@ -52,6 +53,12 @@ public class GOLConsoleView implements View {
 		System.out.print(" ");
 		for(int j=0;j<bounds.get(1);j++)
 			System.out.print("-");
+	}
+
+	@Override
+	public void setController(Controller controller) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

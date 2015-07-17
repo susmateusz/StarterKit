@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
 import java.util.Map.Entry;
-
-import com.msus.GameOfLifeMVCInterfaces.Model;
+import java.util.Observable;
 
 public class GameOfLife extends Observable implements CellulatAutomation {
 
@@ -84,6 +82,17 @@ public class GameOfLife extends Observable implements CellulatAutomation {
 	@Override
 	public List<List<Integer>> getData() {
 		return toArrayOfState(State.ALIVE);
+	}
+
+	@Override
+	public void setCellState(List<Integer> coords) {
+		State currentState = grid.get(coords).getState();
+		State newState = currentState == State.DEAD ? State.ALIVE : State.DEAD;
+		System.out.println("Changing "+currentState+" to "+newState);
+		setCellState(coords, newState);
+		setChanged();
+		notifyObservers(toArrayOfState(State.ALIVE) );
+		
 	}
 	
 	

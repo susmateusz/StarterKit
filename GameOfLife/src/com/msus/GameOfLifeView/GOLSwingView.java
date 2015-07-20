@@ -31,7 +31,7 @@ import com.msus.GameOfLifeModel.State;
 
 public class GOLSwingView extends JFrame implements View {
 
-	public static Integer CELL_SIZE = 10;
+	public static Integer CELL_SIZE = 6;
 	public static Integer FIELDS_HEIGHT = 30;
 	/**
 	 * 

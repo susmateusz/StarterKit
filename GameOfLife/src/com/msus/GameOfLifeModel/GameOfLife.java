@@ -11,7 +11,7 @@ public class GameOfLife extends Observable implements CellulatAutomation {
 
 	private Map<List<Integer>, Cell> grid = new HashMap<List<Integer>, Cell>();
 	private List<Integer> bounds = new ArrayList<Integer>();
-	
+
 	public long nextFunctionCounter = 0;
 
 	public GameOfLife(int n, int m) {
@@ -38,6 +38,8 @@ public class GameOfLife extends Observable implements CellulatAutomation {
 
 	@Override
 	public void setCellState(List<Integer> coords, State state) {
+		for(int j=0;j<coords.size();j++)
+			coords.set(j, (coords.get(j)%bounds.get(j)+bounds.get(j))%bounds.get(j));
 		grid.put(coords, new Cell(state));
 	}
 
@@ -45,8 +47,8 @@ public class GameOfLife extends Observable implements CellulatAutomation {
 	public void next() {
 		Map<List<Integer>, Cell> changedCells = new HashMap<List<Integer>, Cell>();
 		for (List<Integer> coords : grid.keySet()) {
-			nextFunctionCounter+=1;
-			System.out.println("Next: "+nextFunctionCounter);
+			nextFunctionCounter += 1;
+			// System.out.println("Next: "+nextFunctionCounter);
 			Cell tmpCell = (Cell) grid.get(coords).clone();
 			List<List<Integer>> surroundingCoords = getSurroundingCoords(coords);
 			List<Cell> surroundCells = new ArrayList<Cell>();
@@ -61,21 +63,26 @@ public class GameOfLife extends Observable implements CellulatAutomation {
 		// updating
 		grid.putAll(changedCells);
 		setChanged();
-		notifyObservers(toArrayOfState(State.ALIVE) );
+		notifyObservers(toArrayOfState(State.ALIVE));
 	}
 
 	private List<List<Integer>> getSurroundingCoords(List<Integer> coords) {
 		List<List<Integer>> result = new ArrayList<List<Integer>>();
 		int dim = bounds.size();
-		// 
+		//
 		for (int i = 0; i < Math.pow(3, dim); i++) {
 			List<Integer> shiftedCoords = new ArrayList<Integer>(dim);
 			boolean isNotOutOfBound = true;
 			for (int j = 0; j < dim; j++) {
 				int shift = new Double(i / Math.pow(3, j)).intValue() % 3 - 1;
-				if (coords.get(j) + shift < 0 || coords.get(j) + shift >= bounds.get(j))
-					isNotOutOfBound = false;
-				shiftedCoords.add(j, coords.get(j) + shift);
+				// board is finite
+				// if (coords.get(j) + shift < 0 || coords.get(j) + shift >=
+				// bounds.get(j))
+				// isNotOutOfBound = false;
+				int a = coords.get(j)+shift;
+				int b = bounds.get(j);
+				shiftedCoords.add((a%b+b)%b);
+//				shiftedCoords.add(j, coords.get(j) + shift);
 			}
 			if (!shiftedCoords.equals(coords) && isNotOutOfBound)
 				result.add(shiftedCoords);
@@ -92,17 +99,16 @@ public class GameOfLife extends Observable implements CellulatAutomation {
 	public void setCellState(List<Integer> coords) {
 		State currentState = grid.get(coords).getState();
 		State newState = currentState == State.DEAD ? State.ALIVE : State.DEAD;
-		System.out.println("Changing "+currentState+" to "+newState);
+		// System.out.println("Changing "+currentState+" to "+newState);
 		setCellState(coords, newState);
 		setChanged();
-		notifyObservers(toArrayOfState(State.ALIVE) );
-		
+		notifyObservers(toArrayOfState(State.ALIVE));
+
 	}
 
 	@Override
 	public State getCellState(List<Integer> coords) {
 		return grid.get(coords).getState();
 	}
-	
-	
+
 }

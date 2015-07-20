@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum GOLPattern {
-	EMPTY, GLIDER, TOAD, LIGHTWEIGHT_SPACESHIP, GOSPER_GLIDER_GUN;
+	EMPTY, GLIDER, TOAD, LIGHTWEIGHT_SPACESHIP, GOSPER_GLIDER_GUN,FOUNTAIN;
 
 	List<List<Integer>> points;
 
@@ -76,6 +76,29 @@ public enum GOLPattern {
 			points.add(new Integer[] { -1, 34 });
 			points.add(new Integer[] { -2, 35 });
 			points.add(new Integer[] { -1, 35 });
+		} else if(this == GOLPattern.FOUNTAIN){
+			points.add(new Integer[] {1,0});
+			points.add(new Integer[] {2,0});
+			points.add(new Integer[] {3,0});
+			points.add(new Integer[] {4,0});
+			points.add(new Integer[] {5,0});
+			points.add(new Integer[] {6,0});
+			points.add(new Integer[] {0,1});
+			points.add(new Integer[] {7,1});			
+			points.add(new Integer[] {0,2});
+			points.add(new Integer[] {7,2});
+			points.add(new Integer[] {0,3});
+			points.add(new Integer[] {4,3});
+			points.add(new Integer[] {7,3});
+			points.add(new Integer[] {0,4});
+			points.add(new Integer[] {4,4});
+			points.add(new Integer[] {7,4});
+			points.add(new Integer[] {1,5});
+			points.add(new Integer[] {2,5});
+			points.add(new Integer[] {4,5});
+			points.add(new Integer[] {5,5});
+			points.add(new Integer[] {6,5});
+			
 		}
 		for (Integer[] p : points) {
 			int p0 = p[0];

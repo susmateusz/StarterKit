@@ -192,8 +192,13 @@ public class GameOfLifeTest {
 
 	@Test
 	public void shouldRunSwingWithFixedParameters() {
+		int a = 103;
+		int b = 100;
+		System.out.println( (a%b+b)%b);
+		a = -3;
+		System.out.println( (a%b+b)%b);
 		System.out.println("Fixed.1");
-		GameOfLifeController control = new GameOfLifeController(60,100);
+		GameOfLifeController control = new GameOfLifeController(170,280);
 		System.out.println("Fixed.2");
 		control.setSpeed(30);
 		System.out.println("Fixed.3");

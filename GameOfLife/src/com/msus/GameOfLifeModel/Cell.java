@@ -43,7 +43,8 @@ public class Cell implements Cloneable{
 	}
 	
 	private boolean shouldDie(int sum){
-		return getState()==State.ALIVE && sum!=2 && sum != 3;
+		return getState()==State.ALIVE && sum!=2 && sum !=3;
+		//return getState()==State.ALIVE && sum!=2 && sum != 3 && sum !=4;
 	}
 	
 	private boolean shouldBorn(int sum){

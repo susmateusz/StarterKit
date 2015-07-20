@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum GOLPattern {
-	EMPTY, GLIDER, TOAD, LIGHTWEIGHT_SPACESHIP, GOSPER_GLIDER_GUN,FOUNTAIN;
+	EMPTY, GLIDER, TOAD, LIGHTWEIGHT_SPACESHIP, GOSPER_GLIDER_GUN, INFINITE1, INFINITE2;
 
 	List<List<Integer>> points;
 
@@ -14,7 +14,7 @@ public enum GOLPattern {
 		State expectedState = State.ALIVE;
 		if (this == GOLPattern.EMPTY) {
 			points.add(new Integer[] { 0, 0 });
-			if(model.getCellState(currentCoords) == State.ALIVE)
+			if (model.getCellState(currentCoords) == State.ALIVE)
 				expectedState = State.DEAD;
 		} else if (this == GOLPattern.GLIDER) {
 			points.add(new Integer[] { 0, 1 });
@@ -76,29 +76,31 @@ public enum GOLPattern {
 			points.add(new Integer[] { -1, 34 });
 			points.add(new Integer[] { -2, 35 });
 			points.add(new Integer[] { -1, 35 });
-		} else if(this == GOLPattern.FOUNTAIN){
-			points.add(new Integer[] {1,0});
-			points.add(new Integer[] {2,0});
-			points.add(new Integer[] {3,0});
-			points.add(new Integer[] {4,0});
-			points.add(new Integer[] {5,0});
-			points.add(new Integer[] {6,0});
-			points.add(new Integer[] {0,1});
-			points.add(new Integer[] {7,1});			
-			points.add(new Integer[] {0,2});
-			points.add(new Integer[] {7,2});
-			points.add(new Integer[] {0,3});
-			points.add(new Integer[] {4,3});
-			points.add(new Integer[] {7,3});
-			points.add(new Integer[] {0,4});
-			points.add(new Integer[] {4,4});
-			points.add(new Integer[] {7,4});
-			points.add(new Integer[] {1,5});
-			points.add(new Integer[] {2,5});
-			points.add(new Integer[] {4,5});
-			points.add(new Integer[] {5,5});
-			points.add(new Integer[] {6,5});
-			
+		} else if (this == GOLPattern.INFINITE1) {
+			points.add(new Integer[] { 0, 0 });
+			points.add(new Integer[] { 0, 2 });
+			points.add(new Integer[] { -1, 2 });
+			points.add(new Integer[] { -2, 4 });
+			points.add(new Integer[] { -3, 4 });
+			points.add(new Integer[] { -4, 4 });
+			points.add(new Integer[] { -3, 6 });
+			points.add(new Integer[] { -4, 6 });
+			points.add(new Integer[] { -5, 6 });
+			points.add(new Integer[] { -4, 7 });
+		} else if (this == GOLPattern.INFINITE2) {
+			points.add(new Integer[] { 0, 0 });
+			points.add(new Integer[] { 0, 1 });
+			points.add(new Integer[] { 0, 2 });
+			points.add(new Integer[] { 0, 4 });
+			points.add(new Integer[] { 1, 0 });
+			points.add(new Integer[] { 2, 3 });
+			points.add(new Integer[] { 2, 4 });
+			points.add(new Integer[] { 3, 1 });
+			points.add(new Integer[] { 3, 2 });
+			points.add(new Integer[] { 3, 4 });
+			points.add(new Integer[] { 4, 0 });
+			points.add(new Integer[] { 4, 2 });
+			points.add(new Integer[] { 4, 4 });
 		}
 		for (Integer[] p : points) {
 			int p0 = p[0];

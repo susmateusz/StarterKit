@@ -2,7 +2,6 @@ package com.msus.GameOfLifeView;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -17,7 +16,8 @@ public class GamePanel extends JPanel {
 	List<List<Integer>> active;
 	
 	public GamePanel(List<Integer> bounds) {
-		super();
+		super(true);
+//		super(true);
 		this.bounds = bounds;
 	}
 

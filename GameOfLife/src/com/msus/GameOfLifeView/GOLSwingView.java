@@ -9,16 +9,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -46,12 +47,16 @@ public class GOLSwingView extends JFrame implements View {
 	JTextField textSpeed;
 	JButton btnStart;
 	JButton btnStop;
-	JButton btnAddGlider;
+	JButton btnClear;
+	JButton btnPrintState;
 	JComboBox<GOLPattern> selectPattern;
 	JLabel textRotation;
+	List<List<Integer>> points;
 	protected boolean isSetPattern = false;
 	protected int pattern = 0;
 	protected int rotation = 0;
+	private JButton btnRandom;
+	JSlider filling;
 
 	public GOLSwingView(int n, int m) {
 		bounds.add(n);
@@ -62,9 +67,10 @@ public class GOLSwingView extends JFrame implements View {
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
+		int menuOrder = 0;
 
 		btnNext = new JButton("Next step");
-		btnNext.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * 0, 200, 30);
+		btnNext.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
 		System.out.println("repaint");
 		btnNext.addActionListener(new ActionListener() {
 
@@ -76,15 +82,15 @@ public class GOLSwingView extends JFrame implements View {
 		contentPane.add(btnNext);
 
 		JLabel labelSpeed = new JLabel("FPS");
-		labelSpeed.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * 1, 200, 30);
+		labelSpeed.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
 		contentPane.add(labelSpeed);
-		
+
 		textSpeed = new JTextField("50");
-		textSpeed.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * 2, 200, 30);
+		textSpeed.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
 		contentPane.add(textSpeed);
 
 		btnStart = new JButton("Start game / load speed");
-		btnStart.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * 3, 200, 30);
+		btnStart.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
 		btnStart.addActionListener(new ActionListener() {
 
 			@Override
@@ -95,7 +101,7 @@ public class GOLSwingView extends JFrame implements View {
 		contentPane.add(btnStart);
 
 		btnStop = new JButton("Stop game");
-		btnStop.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * 4, 200, 30);
+		btnStop.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
 		btnStop.addActionListener(new ActionListener() {
 
 			@Override
@@ -105,9 +111,9 @@ public class GOLSwingView extends JFrame implements View {
 		});
 		contentPane.add(btnStop);
 
-		btnStop = new JButton("Clear board");
-		btnStop.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * 5, 200, 30);
-		btnStop.addActionListener(new ActionListener() {
+		btnClear = new JButton("Clear board");
+		btnClear.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
+		btnClear.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -116,34 +122,86 @@ public class GOLSwingView extends JFrame implements View {
 				controller.update(-1);
 			}
 		});
-		contentPane.add(btnStop);
+		contentPane.add(btnClear);
 
 		selectPattern = new JComboBox<GOLPattern>(GOLPattern.values());
-		selectPattern.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * 6, 200, 30);
+		selectPattern.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
 		selectPattern.setBackground(Color.WHITE);
 		contentPane.add(selectPattern);
 
-		textRotation = new JLabel("Rotation: "+(rotation*90)+" degrees.[press 'R']");
-		textRotation.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * 7, 200, 30);
+		textRotation = new JLabel("Rotation: " + (rotation * 90) + " degrees.[press 'R']");
+		textRotation.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
 		contentPane.add(textRotation);
+
+		btnPrintState = new JButton("Print State");
+		btnPrintState.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
+		btnPrintState.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (List<Integer> coords : active)
+					System.out.println(coords);
+			}
+		});
+		contentPane.add(btnPrintState);
+
+		filling = new JSlider(0, 80, 50);
+		filling.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
+		filling.setMajorTickSpacing(20);
+		filling.setPaintLabels(true);
+
+		contentPane.add(filling);
+
+		btnRandom = new JButton("Random");
+		btnRandom.setBounds(CELL_SIZE / 2 + bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
+		btnRandom.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Integer fillingRate = filling.getValue();
+				System.out.println("Rate: "+fillingRate);
+				System.out.println("Max: "+bounds.get(0) * bounds.get(1) );
+				System.out.println("Target: "+ bounds.get(0) * bounds.get(1) * fillingRate / 100.0);
+				int counter = 0;
+				Random rand = new Random();
+				for(int i=0;i<bounds.get(0);i++){
+					for(int j=0;j<bounds.get(1);j++){
+						List<Integer> coords = new ArrayList<Integer>(Arrays.asList(new Integer[]{i,j}));
+						int random = rand.nextInt(100);
+						if(random<fillingRate){
+							model.setCellState(coords, State.ALIVE);
+							System.out.println(coords+" "+random+" "+model.getCellState(coords));
+						}
+					}
+				}
+//				while (model.toArrayOfState(State.ALIVE).size() < bounds.get(0) * bounds.get(1) * fillingRate / 100) {
+//					System.out.println(model.toArrayOfState(State.ALIVE).size());
+//					List<Integer> coords = new ArrayList<Integer>(
+//							Arrays.asList(new Integer[] { rand.nextInt(bounds.get(1)), rand.nextInt(bounds.get(0)) }));
+//					if (model.getCellState(coords) == State.DEAD)
+//						model.setCellState(coords, State.ALIVE);
+//				}
+				controller.update(-1);
+			}
+		});
+		contentPane.add(btnRandom);
 
 		addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// int n = (e.getY() - 3 * CELL_SIZE / 2) / CELL_SIZE;
-				// int m = (e.getX() - 4 * CELL_SIZE / 10) / CELL_SIZE;
+				points = new ArrayList<List<Integer>>();
 				List<Integer> currentCoords = new ArrayList<Integer>();
 				currentCoords.add((e.getY() - 30) / CELL_SIZE);
 				currentCoords.add((e.getX() - 8) / CELL_SIZE);
-				((GOLPattern) selectPattern.getSelectedItem()).draw(model, currentCoords, rotation);
-				model.hasChanged();
-				model.notifyObservers(model.toArrayOfState(State.ALIVE));
-				active = model.getData();
-				print();
-
-				// }
-
+				if (currentCoords.get(0) < bounds.get(0) && currentCoords.get(1) < bounds.get(1)) {
+					((GOLPattern) selectPattern.getSelectedItem()).draw(model, currentCoords, rotation);
+					model.hasChanged();
+					model.notifyObservers(model.toArrayOfState(State.ALIVE));
+					active = model.getData();
+					print();
+				}
+				points.add(currentCoords);
 			}
 
 		});
@@ -160,7 +218,6 @@ public class GOLSwingView extends JFrame implements View {
 				}
 			}
 		});
-
 
 	}
 
@@ -194,9 +251,9 @@ public class GOLSwingView extends JFrame implements View {
 
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent e) {
-			if(e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode()==82){
-				rotation = (rotation+1) % 4;
-				textRotation.setText("Rotation: "+(rotation*90)+" degrees.[press 'R']");
+			if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == 82) {
+				rotation = (rotation + 1) % 4;
+				textRotation.setText("Rotation: " + (rotation * 90) + " degrees.[press 'R']");
 				System.out.println(rotation);
 			}
 			return false;

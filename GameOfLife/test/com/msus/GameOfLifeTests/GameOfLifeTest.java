@@ -1,19 +1,14 @@
 package com.msus.GameOfLifeTests;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 
 import com.msus.GameOfLifeController.GameOfLifeController;
-import com.msus.GameOfLifeMVCInterfaces.Controller;
-import com.msus.GameOfLifeModel.CellulatAutomation;
-import com.msus.GameOfLifeModel.GameOfLife;
-import com.msus.GameOfLifeModel.State;
-import com.msus.GameOfLifeView.GOLConsoleView;
+import com.msus.GameOfLifeView.GOLSwingView;
 
 public class GameOfLifeTest {
 
@@ -198,11 +193,30 @@ public class GameOfLifeTest {
 		a = -3;
 		System.out.println( (a%b+b)%b);
 		System.out.println("Fixed.1");
-		GameOfLifeController control = new GameOfLifeController(170,280);
+		GOLSwingView.CELL_SIZE=12;
+		GameOfLifeController control = new GameOfLifeController(10,10);
+//		GameOfLifeController control = new GameOfLifeController(170,280);
 		System.out.println("Fixed.2");
 		control.setSpeed(30);
 		System.out.println("Fixed.3");
 	}
 		
+	@Test
+	public void testingMapOperations() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("1", "one");
+		map.put("2", "two");
+		map.put("3", "three");
+
+		Set<String> set = new HashSet<String>();
+		set.add("1");
+		set.add("4");	
+		Map<String,String> map2 = new HashMap<String,String>(map);
+		
+		map2.keySet().removeAll(set);
+		System.out.println(map);
+		System.out.println(map2);
+	}
+	
 		
 }

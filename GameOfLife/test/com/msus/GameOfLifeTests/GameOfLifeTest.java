@@ -185,16 +185,26 @@ public class GameOfLifeTest {
 //		control.setSpeed(30);
 //	}
 
+//	@Test
+//	public void shouldRunSwingWithFixedParameters() {
+//		int a = 103;
+//		int b = 100;
+//		System.out.println( (a%b+b)%b);
+//		a = -3;
+//		System.out.println( (a%b+b)%b);
+//		System.out.println("Fixed.1");
+//		GOLSwingView.CELL_SIZE=12;
+//		GameOfLifeController control = new GameOfLifeController(10,10);
+////		GameOfLifeController control = new GameOfLifeController(170,280);
+//		System.out.println("Fixed.2");
+//		control.setSpeed(30);
+//		System.out.println("Fixed.3");
+//	}
+//		
 	@Test
 	public void shouldRunSwingWithFixedParameters() {
-		int a = 103;
-		int b = 100;
-		System.out.println( (a%b+b)%b);
-		a = -3;
-		System.out.println( (a%b+b)%b);
-		System.out.println("Fixed.1");
 		GOLSwingView.CELL_SIZE=12;
-		GameOfLifeController control = new GameOfLifeController(10,10);
+		GameOfLifeController control = new GameOfLifeController();
 //		GameOfLifeController control = new GameOfLifeController(170,280);
 		System.out.println("Fixed.2");
 		control.setSpeed(30);

@@ -38,13 +38,7 @@ public class GameOfLife extends Observable implements CellulatAutomation {
 	public void setCellState(List<Integer> coords, State state) {
 		for (int j = 0; j < coords.size(); j++)
 			coords.set(j, (coords.get(j) % bounds.get(j) + bounds.get(j)) % bounds.get(j));
-		// if( state == State.DEAD){
-		// grid.remove(coords);
-		// }
-		// else{
 		grid.put(coords, new Cell(state));
-		// }
-		// System.out.println(grid);
 	}
 
 	@Override

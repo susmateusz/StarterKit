@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Observable;
 
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import com.msus.GameOfLifeMVCInterfaces.Controller;

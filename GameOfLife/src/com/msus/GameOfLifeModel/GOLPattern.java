@@ -1,21 +1,19 @@
 package com.msus.GameOfLifeModel;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public enum GOLPattern {
 	EMPTY, GLIDER, TOAD, LIGHTWEIGHT_SPACESHIP, GOSPER_GLIDER_GUN, INFINITE1, INFINITE2;
 
 	List<List<Integer>> points;
 
-	public void draw(CellulatAutomation model, List<Integer> currentCoords, int rot) {
-		List<Integer[]> points = new ArrayList<Integer[]>();
-		State expectedState = State.ALIVE;
+	public Set<Integer[]> getPoints(List<Integer> currentCoords, int rot){
+		Set<Integer[]> points = new HashSet<Integer[]>();
 		if (this == GOLPattern.EMPTY) {
 			points.add(new Integer[] { 0, 0 });
-			if (model.getCellState(currentCoords) == State.ALIVE)
-				expectedState = State.DEAD;
 		} else if (this == GOLPattern.GLIDER) {
 			points.add(new Integer[] { 0, 1 });
 			points.add(new Integer[] { 1, 2 });
@@ -109,6 +107,15 @@ public enum GOLPattern {
 			p[0] += currentCoords.get(0);
 			p[1] = p0 * (int) Math.sin(Math.PI * rot / 2) + p1 * (int) Math.cos(Math.PI * rot / 2);
 			p[1] += currentCoords.get(1);
+		}
+		return points;
+	}
+	public void draw(CellulatAutomation model, List<Integer> currentCoords, int rot) {
+		State expectedState = State.ALIVE;
+		if( this == GOLPattern.EMPTY && model.getCellState(currentCoords) == State.ALIVE)
+			expectedState = State.DEAD;
+		Set<Integer[]> points = getPoints(currentCoords, rot);
+		for (Integer[] p : points) {
 			model.setCellState(Arrays.asList(p), expectedState);
 		}
 	}

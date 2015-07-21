@@ -1,10 +1,5 @@
 package com.msus.GameOfLifeTests;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.junit.Test;
 
 import com.msus.GameOfLifeController.GameOfLifeController;
@@ -211,22 +206,6 @@ public class GameOfLifeTest {
 		System.out.println("Fixed.3");
 	}
 		
-	@Test
-	public void testingMapOperations() {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("1", "one");
-		map.put("2", "two");
-		map.put("3", "three");
-
-		Set<String> set = new HashSet<String>();
-		set.add("1");
-		set.add("4");	
-		Map<String,String> map2 = new HashMap<String,String>(map);
-		
-		map2.keySet().removeAll(set);
-		System.out.println(map);
-		System.out.println(map2);
-	}
 	
 		
 }

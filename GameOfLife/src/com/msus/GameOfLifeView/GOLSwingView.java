@@ -10,16 +10,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
+import java.util.Set;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
@@ -137,10 +142,27 @@ public class GOLSwingView extends JFrame implements View {
 		selectPattern.setBounds(bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
 		selectPattern.setBackground(Color.WHITE);
 		contentPane.add(selectPattern);
-		
-		labelPos = new JLabel(new String("Cursor pos:\t(?,\t?)"));
+
+		labelPos = new JLabel(new String("Out of board."));
 		labelPos.setBounds(bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
 		contentPane.add(labelPos);
+
+		ButtonGroup shadowOptions = new ButtonGroup();
+		for (ShadowMode mode : ShadowMode.values()) {
+			JRadioButton btnShadowMode = new JRadioButton(mode.toString());
+			btnShadowMode.setSelected(mode == ShadowMode.FULL_TRACE);
+			btnShadowMode.setBounds(bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
+			btnShadowMode.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AbstractButton btn = (AbstractButton) e.getSource();
+					contentPane.shadowMode = ShadowMode.valueOf(btn.getText());
+				}
+			});
+			contentPane.add(btnShadowMode);
+			shadowOptions.add(btnShadowMode);
+		}
 
 		textRotation = new JLabel("Rotation: " + (rotation * 90) + " degrees.[press 'R']");
 		textRotation.setBounds(bounds.get(1) * CELL_SIZE, FIELDS_HEIGHT * menuOrder++, 200, 30);
@@ -210,7 +232,7 @@ public class GOLSwingView extends JFrame implements View {
 				for (String line : coordsList.getText().split("\n")) {
 					line = line.replaceAll("[^0-9 ]", "");
 					List<Integer> coords = new ArrayList<Integer>();
-					for(String numberInStr : line.split(" "))
+					for (String numberInStr : line.split(" "))
 						coords.add(Integer.parseInt(numberInStr.trim()));
 					model.setCellState(coords, State.ALIVE);
 				}
@@ -226,7 +248,7 @@ public class GOLSwingView extends JFrame implements View {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				points = new ArrayList<List<Integer>>();
+				// points = new ArrayList<List<Integer>>();
 				List<Integer> currentCoords = new ArrayList<Integer>();
 				currentCoords.add((e.getY() - 30) / CELL_SIZE);
 				currentCoords.add((e.getX() - 8) / CELL_SIZE);
@@ -237,7 +259,30 @@ public class GOLSwingView extends JFrame implements View {
 					active = model.getData();
 					print();
 				}
-				points.add(currentCoords);
+				// points.add(currentCoords);
+			}
+
+		});
+
+		addMouseMotionListener(new MouseMotionAdapter() {
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				super.mouseMoved(e);
+				List<Integer> currentCoords = new ArrayList<Integer>();
+				currentCoords.add((e.getY() - 30) / CELL_SIZE);
+				currentCoords.add((e.getX() - 8) / CELL_SIZE);
+				if (currentCoords.get(0) < bounds.get(0) && currentCoords.get(1) < bounds.get(1)) {
+					labelPos.setText("Cursor pos: (" + currentCoords.get(0) + ", " + currentCoords.get(1) + ")");
+					Set<Integer[]> mouseShadowPoints = ((GOLPattern) selectPattern.getSelectedItem())
+							.getPoints(currentCoords, rotation);
+					contentPane.setShadow(mouseShadowPoints);
+					model.hasChanged();
+					model.notifyObservers(model.toArrayOfState(State.ALIVE));
+					active = model.getData();
+					print();
+				} else
+					labelPos.setText("Out of board.");
 			}
 
 		});
